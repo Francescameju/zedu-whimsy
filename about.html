@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>About Zedu — Built for Structured Learning, Not Noise</title>
+<meta name="description" content="A playful redesign prototype of the Zedu About page (HNG15 Task 2)." />
+<link rel="icon" href="zedu-logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="shared.css" />
+<style>
+  /* ---------- Hero: the noise-to-calm stage ---------- */
+  .hero { display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: center; padding: 60px clamp(16px, 5vw, 88px) 40px; }
+  .hero h1 { font-size: clamp(36px, 5vw, 64px); line-height: 1.05; }
+  .hero h1 .not { color: var(--purple); }
+  .hero h1 .noise { display: inline-block; position: relative; color: #98a2b3; }
+  .hero h1 .noise::after { content: ""; position: absolute; left: -4%; right: -4%; top: 52%; height: 6px; border-radius: 6px; background: var(--purple); transform: scaleX(0); transform-origin: left; transition: transform .6s ease .2s; }
+  .calm-done .hero h1 .noise::after { transform: scaleX(1); }
+  .calm-done .hero h1 .noise { animation: none; }
+  .hero h1 .noise { animation: jitter .35s steps(2) infinite; }
+  @keyframes jitter { 50% { transform: translate(1px, -1px) rotate(-1deg); } }
+  .hero .ctas { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 30px; }
+
+  .stage { position: relative; height: 430px; border-radius: 26px; background: #fafaff; border: 1px solid var(--line); overflow: hidden; box-shadow: 0 30px 60px -28px rgba(47,42,122,.35); }
+  .stage-label { position: absolute; top: 14px; left: 18px; font-family: "Caveat", cursive; font-size: 24px; color: var(--purple); z-index: 3; transition: opacity .4s; }
+  .lanes { position: absolute; inset: 56px 14px 14px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; opacity: 0; transition: opacity .6s ease .3s; }
+  .calm .lanes { opacity: 1; }
+  .lane { border-radius: 16px; background: #fff; border: 1px dashed #d0c4ff; padding: 10px; font-weight: 900; color: var(--purple); font-size: 14px; }
+  .chip {
+    position: absolute; left: 0; top: 0; padding: 8px 12px; border-radius: 14px 14px 14px 4px; font-size: 13px; font-weight: 700; white-space: nowrap;
+    background: #fff; border: 1px solid var(--line); box-shadow: 0 6px 14px rgba(16,24,40,.08);
+    transform: translate(var(--mx), var(--my)) rotate(var(--mr));
+    transition: transform 1s cubic-bezier(.34,1.56,.64,1), background .4s, color .4s, border-color .4s;
+    transition-delay: var(--cd, 0s);
+    animation: buzz 1.4s ease-in-out infinite; animation-delay: var(--bd, 0s);
+  }
+  .chip.loud { background: #fff4ed; border-color: #ffd6ae; color: #b93815; }
+  @keyframes buzz { 50% { translate: 3px -4px; } }
+  .calm .chip { transform: translate(var(--tx), var(--ty)) rotate(0deg); animation: none; background: var(--purple-soft); color: var(--purple); border-color: transparent; }
+  .stage-btn { position: absolute; right: 14px; bottom: 14px; z-index: 4; background: #fff; border: 2px solid var(--purple-soft); color: var(--purple); border-radius: 999px; padding: 8px 14px; font-weight: 700; font-size: 14px; }
+  .stage-btn:hover { background: var(--purple-soft); }
+
+  /* ---------- Philosophy cards ---------- */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 36px; }
+  .card { border-radius: 22px; padding: 28px; border: 1px solid var(--line); background: #fff; transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s; }
+  .card:hover, .card.tap { transform: translateY(-8px) rotate(-1deg); box-shadow: 0 20px 40px -20px rgba(113,65,248,.45); }
+  .card h3 { font-size: 22px; margin: 18px 0 10px; }
+  .card p { color: var(--muted); line-height: 1.65; margin: 0; }
+  .icon { width: 64px; height: 64px; border-radius: 18px; background: var(--purple-soft); display: grid; place-items: center; font-size: 30px; }
+  .card:hover .icon, .card.tap .icon { animation: hop .6s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes hop { 40% { transform: translateY(-10px) rotate(-10deg); } }
+  /* Structure: three blocks stack themselves. */
+  .stack { display: grid; gap: 4px; width: 34px; }
+  .stack i { height: 8px; border-radius: 3px; background: var(--purple); transform: translateX(var(--s)); transition: transform .5s cubic-bezier(.34,1.56,.64,1); }
+  .card:hover .stack i, .card.tap .stack i, .card.in .stack i { transform: none; transition-delay: .5s; }
+  /* AI assist: a robot hands over a note. */
+  .robot { position: relative; }
+  .robot .note { position: absolute; right: -16px; top: 6px; font-size: 18px; transform: scale(0) rotate(-30deg); transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
+  .card:hover .robot .note, .card.tap .robot .note, .card.in .robot .note { transform: scale(1) rotate(8deg); }
+
+  /* ---------- Story band ---------- */
+  .story { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+  .before-after { display: grid; gap: 14px; }
+  .ba { border-radius: 18px; padding: 18px 20px; font-size: 16px; line-height: 1.6; }
+  .ba.before { background: #fff4ed; color: #93370d; transform: rotate(-1.5deg); }
+  .ba.after { background: var(--purple-soft); color: var(--purple-deep); transform: rotate(1deg); }
+  .ba b { display: block; font-family: "Caveat", cursive; font-size: 24px; margin-bottom: 4px; }
+
+  /* ---------- Who it's for ---------- */
+  .who { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 34px; }
+  .who-card { border-radius: 22px; padding: 26px; background: #fafaff; border: 1px solid var(--line); position: relative; overflow: hidden; }
+  .who-card .big { font-size: 46px; display: inline-block; transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
+  .who-card:hover .big, .who-card.tap .big { transform: scale(1.2) rotate(-8deg); }
+  .who-card h3 { margin: 10px 0 8px; font-size: 21px; }
+  .who-card p { color: var(--muted); line-height: 1.6; margin: 0; }
+
+  /* ---------- Vision: words light up as you read ---------- */
+  .vision { text-align: center; }
+  .vision p { font-size: clamp(22px, 3vw, 34px); line-height: 1.45; font-weight: 900; max-width: 1000px; margin: 22px auto 0; }
+  .vision .w { color: #d0d5dd; transition: color .4s ease; }
+  .vision .w.lit { color: var(--ink); }
+  .vision .w.key.lit { color: var(--purple); }
+
+  .badges { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 30px; }
+  .badge { display: flex; gap: 10px; align-items: center; padding: 12px 18px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-weight: 700; }
+  .badge .lock { display: inline-block; transition: transform .4s; }
+  .badge:hover .lock, .badge.tap .lock { transform: rotate(-15deg) scale(1.2); }
+
+  @media (max-width: 760px) { .chip { animation: none; } .hero h1 .noise { animation: none; } }
+  @media (max-width: 900px) {
+    .hero, .story { grid-template-columns: 1fr; }
+    .cards, .who { grid-template-columns: 1fr; }
+    .stage { height: 380px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .chip { transform: translate(var(--tx), var(--ty)) !important; background: var(--purple-soft); color: var(--purple); }
+    .lanes { opacity: 1; }
+    .vision .w { color: var(--ink); }
+  }
+</style>
+</head>
+<body>
+  <nav class="nav" id="nav">
+    <a class="logo" href="index.html" aria-label="Zedu home"><img src="zedu-logo.png" alt="Zedu" /></a>
+    <div class="links">
+      <a href="index.html">Home</a><a href="#">Products ⌄</a><a href="#">Solutions ⌄</a><a href="#">Pricing</a>
+      <a href="about.html" class="here">About Us</a><a href="download.html">Download</a>
+    </div>
+    <div class="nav-right">
+      <a class="login" href="#">Log in</a>
+      <a class="btn btn-ghost" href="#">Contact Sales</a>
+      <a class="btn btn-solid" href="#">Get Started</a>
+    </div>
+    <button class="menu-btn" aria-label="Open menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">our story, in one scroll ↓</div>
+        <h1>Built for Structured Learning <span class="not">Not</span> <span class="noise">Noise</span></h1>
+        <p class="lead">Zedu was created to help educators and learning teams run organized, distraction-free communication for modern cohorts.</p>
+        <div class="ctas">
+          <a class="btn btn-solid" href="#">Explore the product</a>
+          <a class="btn btn-ghost" href="#">View Pricing</a>
+        </div>
+      </div>
+      <div class="stage" id="stage" aria-label="Animation: scattered chat messages tidy themselves into three channels">
+        <span class="stage-label" id="stageLabel">a typical group chat…</span>
+        <div class="lanes" aria-hidden="true">
+          <div class="lane"># cohort-12</div><div class="lane"># announcements</div><div class="lane"># design-track</div>
+        </div>
+        <button class="stage-btn" id="stageBtn" type="button">make it noisy again</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="eyebrow reveal">what we believe</div>
+      <h2 class="reveal">Our Philosophy</h2>
+      <div class="cards">
+        <article class="card reveal" style="--d:.05s">
+          <div class="icon"><span class="stack" aria-hidden="true"><i style="--s:-10px"></i><i style="--s:8px"></i><i style="--s:-4px"></i></span></div>
+          <h3>Structure Drives Clarity</h3>
+          <p>Learning environments should be organized. Channels should have meaning. Communication should feel intentional.</p>
+        </article>
+        <article class="card reveal" style="--d:.15s">
+          <div class="icon"><span class="robot" aria-hidden="true">🤖<span class="note">📝</span></span></div>
+          <h3>AI Should Assist, Not Replace</h3>
+          <p>AI should reduce admin work, summarize discussions, and support learners - not overwhelm them.</p>
+        </article>
+        <article class="card reveal" style="--d:.25s">
+          <div class="icon" aria-hidden="true">🧑‍🏫</div>
+          <h3>Educators Deserve Better Tools</h3>
+          <p>Bootcamps, institutions, and cohort programs need tools built around how learning actually works.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section story">
+      <div>
+        <div class="eyebrow reveal">why we built it</div>
+        <h2 class="reveal">Move quickly from ideas to execution</h2>
+        <p class="lead reveal">We built Zedu to give educators a workspace designed specifically for organized learning where every channel, cohort, and conversation has purpose.</p>
+        <a class="btn btn-ghost reveal" href="#">Contact Sales</a>
+      </div>
+      <div class="before-after">
+        <div class="ba before reveal"><b>before 😵‍💫</b>Modern learning programs were forced to rely on tools built for workplaces or social chat. Important messages got buried. Cohort discussions became messy. Structure was missing.</div>
+        <div class="ba after reveal" style="--d:.2s"><b>with Zedu 😌</b>Every channel, cohort, and conversation has a purpose, so the important message is always where you expect it.</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="eyebrow reveal">who it's for</div>
+      <h2 class="reveal">Designed for Modern Learning Teams</h2>
+      <div class="who">
+        <article class="who-card reveal" style="--d:.05s"><span class="big" aria-hidden="true">🚀</span><h3>Bootcamps</h3><p>Run structured cohorts with clear communication. Keep students engaged without the noise of traditional chat apps.</p></article>
+        <article class="who-card reveal" style="--d:.15s"><span class="big" aria-hidden="true">🏛️</span><h3>Universities</h3><p>Organize programs, departments, and study groups in a secure educator-controlled environment.</p></article>
+        <article class="who-card reveal" style="--d:.25s"><span class="big" aria-hidden="true">🌍</span><h3>Online Learning platforms</h3><p>Scale learning communities without chaos. Manage thousands of learners with AI-assisted moderation.</p></article>
+      </div>
+    </section>
+
+    <section class="section vision">
+      <div class="eyebrow">our vision</div>
+      <p id="vision">We believe the future of education is structured, AI-assisted, and built for engagement. Zedu exists to make organized learning the standard not the exception.</p>
+      <div class="badges">
+        <span class="badge reveal"><span class="lock" aria-hidden="true">🔒</span>Secure data infrastructure</span>
+        <span class="badge reveal" style="--d:.1s"><span class="lock" aria-hidden="true">🛡️</span>Role-based permissions</span>
+        <span class="badge reveal" style="--d:.2s"><span class="lock" aria-hidden="true">🧑‍🏫</span>Educator-controlled environments</span>
+      </div>
+    </section>
+
+    <section class="cta-band reveal">
+      <h2>Start Building Structured Learning Today</h2>
+      <p class="lead">Create organized channels, manage cohorts, and bring AI into your learning environment.</p>
+      <a class="btn btn-solid" href="#">Get started for free</a>
+      <a class="btn btn-ghost" href="#" style="margin-left:10px">Contact Sales</a>
+    </section>
+  </main>
+
+  <footer>Playful redesign prototype of zedu.chat/about · HNG15 Task 2 · built by Franchesca Meju (Team Cybertron) · <a href="index.html">Home</a> · <a href="download.html">Download</a></footer>
+
+<script>
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---------- Noise to calm ----------
+  const MSGS = [
+    ["HELLO??", "cohort-12", true], ["who has the slides", "cohort-12"], ["class at 10 ☀️", "announcements"],
+    ["😂😂😂", "cohort-12", true], ["deadline moved!!", "announcements", true], ["figma link pls", "design-track"],
+    ["is it today or tmrw", "announcements"], ["new mockups 🎨", "design-track"], ["brb", "cohort-12"],
+    ["recording is up 🎥", "announcements"], ["grid feedback?", "design-track", true], ["thanks!!", "cohort-12"]
+  ];
+  const LANES = ["cohort-12", "announcements", "design-track"];
+  const stage = document.getElementById("stage");
+  const chips = MSGS.map(([text, lane, loud], i) => {
+    const c = document.createElement("span");
+    c.className = "chip" + (loud ? " loud" : "");
+    c.textContent = text;
+    c.dataset.lane = lane;
+    c.style.setProperty("--bd", (Math.random() * 1.2).toFixed(2) + "s");
+    c.style.setProperty("--cd", (i * 0.06).toFixed(2) + "s");
+    c.setAttribute("aria-hidden", "true");
+    stage.appendChild(c);
+    return c;
+  });
+
+  // Where each chip sits when messy (random) and when calm (in its lane).
+  function layout() {
+    const W = stage.clientWidth, H = stage.clientHeight;
+    const laneW = (W - 28 - 24) / 3;
+    const count = { "cohort-12": 0, "announcements": 0, "design-track": 0 };
+    chips.forEach((c) => {
+      const cw = c.offsetWidth, ch = c.offsetHeight;
+      c.style.setProperty("--mx", Math.round(Math.random() * Math.max(10, W - cw - 10)) + "px");
+      c.style.setProperty("--my", Math.round(40 + Math.random() * Math.max(10, H - ch - 90)) + "px");
+      c.style.setProperty("--mr", (Math.random() * 30 - 15).toFixed(1) + "deg");
+      const li = LANES.indexOf(c.dataset.lane);
+      const k = count[c.dataset.lane]++;
+      const x = 14 + li * (laneW + 12) + 10;
+      c.style.setProperty("--tx", Math.round(Math.min(x, x + laneW - cw - 14)) + "px");
+      c.style.setProperty("--ty", Math.round(56 + 36 + k * (ch + 10)) + "px");
+    });
+  }
+  layout();
+  addEventListener("resize", layout);
+
+  const label = document.getElementById("stageLabel");
+  function calm() {
+    stage.classList.add("calm");
+    document.body.classList.add("calm-done");
+    label.textContent = "…the same chat, in Zedu";
+  }
+  function noisy() {
+    stage.classList.remove("calm");
+    document.body.classList.remove("calm-done");
+    label.textContent = "a typical group chat…";
+    layout();
+    setTimeout(calm, 2400);
+  }
+  document.getElementById("stageBtn").addEventListener("click", noisy);
+
+  // Start messy, then tidy up once the person is looking at it.
+  if (reduce) { calm(); }
+  else {
+    const start = () => setTimeout(calm, 2200);
+    if (document.visibilityState === "visible") start();
+    else document.addEventListener("visibilitychange", function once() {
+      if (document.visibilityState === "visible") { document.removeEventListener("visibilitychange", once); start(); }
+    });
+  }
+
+  // ---------- Vision words light up as you scroll ----------
+  const vision = document.getElementById("vision");
+  const KEY = /structured|AI-assisted|engagement|organized|standard/i;
+  vision.innerHTML = vision.textContent.split(" ").map((w) => `<span class="w${KEY.test(w) ? " key" : ""}">${w}</span>`).join(" ");
+  const words = [...vision.querySelectorAll(".w")];
+  function lightWords() {
+    const r = vision.getBoundingClientRect();
+    const progress = Math.min(1, Math.max(0, (innerHeight * 0.85 - r.top) / (r.height + innerHeight * 0.35)));
+    const n = Math.round(progress * words.length);
+    words.forEach((w, i) => w.classList.toggle("lit", reduce || i < n));
+  }
+  addEventListener("scroll", lightWords, { passive: true });
+  lightWords();
+
+  // Tap = hover on phones: replay a card's little animation.
+  document.querySelectorAll(".card, .who-card, .badge").forEach((el) => el.addEventListener("click", () => {
+    el.classList.remove("tap"); void el.offsetWidth; el.classList.add("tap");
+    setTimeout(() => el.classList.remove("tap"), 900);
+  }));
+
+  // ---------- Things float in when scrolled into view ----------
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .2 });
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+</script>
+</body>
+</html>
