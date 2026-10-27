@@ -145,7 +145,7 @@
     100% { transform: translateY(-110vh) translateX(-10px) rotate(-3deg); opacity: 0; }
   }
 
-  .plane { position: absolute; z-index: -1; top: 170px; left: -80px; font-size: 34px; offset-path: path("M0,60 C220,-40 420,160 680,40 S1160,-20 1500,80"); animation: fly 12s ease-in-out infinite; }
+  .plane { position: absolute; z-index: -1; top: 170px; left: -80px; font-size: 34px; offset-path: path("M0,60 C220,-40 420,160 680,40 S1160,-20 1500,80"); animation: fly 12s ease-in-out 1 forwards; }
   @supports not (offset-path: path("M0,0")) { .plane { display: none; } }
   @keyframes fly { 0% { offset-distance: 0%; opacity: 0; } 8% { opacity: 1; } 92% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
 
@@ -222,8 +222,8 @@
   <nav class="nav" id="nav">
     <a class="logo" href="#" aria-label="Zedu home"><img src="zedu-logo.png" alt="Zedu" /></a>
     <div class="links">
-      <a href="channels.html">Channels</a><a href="files.html">Files</a><a href="bootcamps.html">Bootcamps</a>
-      <a href="pricing.html">Pricing</a><a href="about.html">About Us</a><a href="download.html">Download</a>
+      <a href="#">Products ⌄</a><a href="#">Solutions ⌄</a><a href="#">Resources</a>
+      <a href="pricing.html">Pricing</a><a href="#">About Us</a><a href="#">Download</a>
     </div>
     <div class="nav-right">
       <a class="login" href="#">Log in</a>
@@ -282,7 +282,7 @@
     </div>
   </main>
 
-  <footer>Playful redesign prototype of zedu.chat · HNG15 Task 2 · built by Franchesca Meju (Team Cybertron) · <a href="about.html">About</a> · <a href="download.html">Download</a></footer>
+  <footer>Playful redesign prototype of zedu.chat · HNG15 Task 2 · built by Franchesca Meju (Team Cybertron)  · <a href="pricing.html">Pricing</a></footer>
 
 <script>
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -302,7 +302,8 @@
     setTimeout(() => b.remove(), dur * 1000);
   }
   for (let i = 0; i < 3; i++) setTimeout(addBubble, i * 900);
-  setInterval(addBubble, 2200);
+  let bubblesLeft = 5;
+  const bubbleTimer = setInterval(() => { if (bubblesLeft-- <= 0) return clearInterval(bubbleTimer); addBubble(); }, 2200);
 
   // Build the headline letter by letter so every letter can bounce in.
   const headline = document.getElementById("headline");
@@ -411,24 +412,6 @@
       setTimeout(() => c.remove(), 1200);
     }
   });
-
-  // A soft sparkle trail for mouse users only (not on touch screens).
-  if (!reduce && matchMedia("(pointer: fine)").matches) {
-    let last = 0;
-    addEventListener("mousemove", (e) => {
-      const now = performance.now();
-      if (now - last < 40) return;
-      last = now;
-      const s = document.createElement("span");
-      s.className = "spark";
-      s.style.left = e.clientX + "px";
-      s.style.top = e.clientY + "px";
-      s.style.setProperty("--dx", (Math.random() * 30 - 15) + "px");
-      s.style.setProperty("--dy", (Math.random() * 30 + 10) + "px");
-      document.body.appendChild(s);
-      setTimeout(() => s.remove(), 700);
-    });
-  }
 </script>
 </body>
 </html>
