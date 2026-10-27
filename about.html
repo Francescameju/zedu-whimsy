@@ -19,7 +19,6 @@
   .hero h1 .noise::after { content: ""; position: absolute; left: -4%; right: -4%; top: 52%; height: 6px; border-radius: 6px; background: var(--purple); transform: scaleX(0); transform-origin: left; transition: transform .6s ease .2s; }
   .calm-done .hero h1 .noise::after { transform: scaleX(1); }
   .calm-done .hero h1 .noise { animation: none; }
-  .hero h1 .noise { animation: jitter .35s steps(2) infinite; }
   @keyframes jitter { 50% { transform: translate(1px, -1px) rotate(-1deg); } }
   .hero .ctas { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 30px; }
 
@@ -34,7 +33,6 @@
     transform: translate(var(--mx), var(--my)) rotate(var(--mr));
     transition: transform 1s cubic-bezier(.34,1.56,.64,1), background .4s, color .4s, border-color .4s;
     transition-delay: var(--cd, 0s);
-    animation: buzz 1.4s ease-in-out infinite; animation-delay: var(--bd, 0s);
   }
   .chip.loud { background: #fff4ed; border-color: #ffd6ae; color: #b93815; }
   @keyframes buzz { 50% { translate: 3px -4px; } }
