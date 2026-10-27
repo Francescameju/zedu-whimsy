@@ -19,13 +19,5 @@ Built by Franchesca Meju (Team Cybertron).
 
 Phone-first: every effect plays on scroll or tap (no hover needed), only one or two things move at a time, and constant motion is turned off on small screens.
 
-## App screen: subtle delight (`app.html`)
-Feedback said the marketing pages were too dramatic, and most Zedu use is on phones, so the app screen uses small touches borrowed from well-loved apps:
-- **Reactions pop with a floating "+1"** when you tap them (Slack, Discord).
-- **The channel highlight slides** to the channel you pick instead of jumping (Linear, Notion).
-- **Date labels settle in** as you scroll ("Yesterday", "Today") (WhatsApp, iMessage).
-- **@channel gets one soft highlight sweep** the first time you see it.
-- **Tapping the locked message box makes the lock wiggle** and suggests #general (the iOS "wrong passcode" shake, but friendly).
-- **Start Buzz**: the headset gives a short buzz.
-
-Nothing moves on its own except a one-time settle; everything else answers a tap. Names and messages are samples, not real people.
+## Pages in the submission
+Home, Pricing, Channels, Files, Bootcamps, About and Download. Each page keeps the homepage style (purple, a hand-drawn squiggle under the title, bouncy buttons) and adds one or two small effects tied to what the page is about. Inner pages play each effect once on scroll or on tap, so phones get the same experience as a mouse.
