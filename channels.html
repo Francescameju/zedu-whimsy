@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Channels — Zedu (whimsical prototype)</title>
+<link rel="icon" href="zedu-logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="shared.css" />
+<style>
+  /* Messages slide into their channel, one after another, once. */
+  .sorter { max-width: 900px; margin: 10px auto 0; padding: 0 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .col { border-radius: 20px; background: #fafaff; border: 1px solid var(--line); padding: 14px; min-height: 190px; }
+  .col h4 { margin: 0 0 12px; color: var(--purple); font-size: 16px; }
+  .m { background: #fff; border: 1px solid var(--line); border-radius: 12px 12px 12px 4px; padding: 9px 12px; font-size: 14px; margin-bottom: 8px; opacity: 0; transform: translateX(-30px) rotate(-3deg); }
+  .sorter.in .m { animation: slot .6s cubic-bezier(.34,1.56,.64,1) forwards; animation-delay: var(--d); }
+  @keyframes slot { to { opacity: 1; transform: none; } }
+
+  /* Threaded reply: the thread line draws down to the replies. */
+  .thread { max-width: 520px; }
+  .post { display: flex; gap: 10px; align-items: flex-start; }
+  .av { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; color: #fff; font-weight: 900; flex: none; }
+  .bub { background: #fafaff; border: 1px solid var(--line); border-radius: 12px; padding: 9px 12px; font-size: 15px; }
+  .replies { position: relative; margin: 6px 0 0 16px; padding-left: 26px; display: grid; gap: 8px; }
+  .replies::before { content: ""; position: absolute; left: 0; top: 0; width: 18px; height: 0; border-left: 3px solid #d0c4ff; border-bottom: 3px solid #d0c4ff; border-bottom-left-radius: 14px; transition: height .8s ease; }
+  .thread.in .replies::before, .thread.tap .replies::before { height: calc(100% - 14px); }
+  .replies .post { opacity: 0; transform: translateY(8px); transition: opacity .4s, transform .4s; }
+  .thread.in .replies .post { opacity: 1; transform: none; }
+  .thread.in .replies .post:nth-child(2) { transition-delay: .5s; }
+  .thread.in .replies .post:nth-child(1) { transition-delay: .3s; }
+
+  /* Announcement megaphone wiggles on tap or when it scrolls in. */
+  .mega { font-size: 30px; display: inline-block; }
+  .box.in .mega, .box.tap .mega { animation: shout .7s ease; }
+  @keyframes shout { 20%, 60% { transform: rotate(-14deg) scale(1.15); } 40%, 80% { transform: rotate(8deg) scale(1.15); } }
+
+  .scale-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-top: 18px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--purple-soft); transition: background .3s; transition-delay: var(--d); }
+  .watch.in .dot { background: var(--purple); }
+
+  @media (max-width: 900px) { .sorter { grid-template-columns: 1fr; } .col { min-height: 0; } }
+</style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="logo" href="index.html" aria-label="Zedu home"><img src="zedu-logo.png" alt="Zedu" /></a>
+    <div class="links">
+      <a href="index.html">Home</a><a href="channels.html" class="here">Channels</a><a href="files.html">Files</a><a href="bootcamps.html">Bootcamps</a>
+      <a href="pricing.html">Pricing</a><a href="about.html">About Us</a><a href="download.html">Download</a>
+    </div>
+    <div class="nav-right"><a class="login" href="#">Log in</a><a class="btn btn-ghost" href="#">Contact Sales</a><a class="btn btn-solid" href="#">Get Started</a></div>
+    <button class="menu-btn" aria-label="Open menu">☰</button>
+  </nav>
+
+  <main>
+    <section class="page-hero">
+      <h1>Organise Learning with Structured <span class="squig">Channels.<svg viewBox="0 0 400 22" preserveAspectRatio="none" aria-hidden="true"><path d="M3 14 C 40 2, 70 22, 110 12 S 180 2, 220 13 S 300 22, 340 10 S 385 6, 397 12"/></svg></span></h1>
+      <p class="lead" style="margin-left:auto;margin-right:auto">Channels keep discussions organized by course, cohort, or topic so students and educators always know where conversations belong.</p>
+      <a class="btn btn-solid" href="#">Start using channels</a>
+    </section>
+
+    <section class="sorter watch" aria-label="Example: messages arrive in the channel they belong to">
+      <div class="col"><h4># maths-101</h4><div class="m" style="--d:.1s">Is the quiz on Friday?</div><div class="m" style="--d:.7s">Worked solutions are up 📎</div></div>
+      <div class="col"><h4># announcements</h4><div class="m" style="--d:.4s">📣 Live class at 10am</div><div class="m" style="--d:1s">Holiday on Monday</div></div>
+      <div class="col"><h4># design-project</h4><div class="m" style="--d:.25s">New mockups 🎨</div><div class="m" style="--d:.85s">Feedback by Thursday</div></div>
+    </section>
+
+    <section class="section">
+      <h2 class="center reveal">Organized Communication for Learning</h2>
+      <div class="grid g3" style="margin-top:30px">
+        <article class="box reveal tappable"><div class="ico" aria-hidden="true">🗂️</div><h3>Keep conversations in the right place</h3><p>Channels help organize conversations so students and educators can easily follow discussions related to specific subjects, classes, projects, or departments.</p></article>
+        <article class="box reveal tappable" style="--d:.1s"><div class="ico" aria-hidden="true">🧵</div><h3>Follow discussions without noise</h3><p>Threaded replies allow users to respond directly to specific messages, keeping discussions organized and easy to follow.</p></article>
+        <article class="box watch tappable" style="--d:.2s"><div class="ico"><span class="mega" aria-hidden="true">📣</span></div><h3>Share important updates clearly</h3><p>Professors, teachers, and mentors can send announcements directly within the relevant channels.</p></article>
+      </div>
+    </section>
+
+    <section class="section" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center" id="threadsec">
+      <div>
+        <div class="eyebrow">replies stay together</div>
+        <h2>Channels built for education</h2>
+        <p class="lead">From small classrooms to large university programs, channels are designed to support structured discussions for every type of learning.</p>
+        <a class="btn btn-ghost" href="#">Get Started</a>
+      </div>
+      <div class="thread watch tappable" aria-label="Example thread: a question with two replies">
+        <div class="post"><span class="av" style="background:#7c5cff">A</span><div class="bub">Can someone explain question 3? 🤔</div></div>
+        <div class="replies">
+          <div class="post"><span class="av" style="background:#ff8a4c">T</span><div class="bub">Start from the formula on slide 12 👍</div></div>
+          <div class="post"><span class="av" style="background:#12b76a">K</span><div class="bub">Got it, thanks!</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section center watch">
+      <h2>Channels that Scale with Your Institution</h2>
+      <p class="lead" style="margin:16px auto 0">Whether you're managing a classroom or an entire university community, Zedu channels help structure conversations across large groups.</p>
+      <div class="scale-row" aria-hidden="true">
+        <i class="dot" style="--d:0s"></i><i class="dot" style="--d:.05s"></i><i class="dot" style="--d:.1s"></i><i class="dot" style="--d:.15s"></i><i class="dot" style="--d:.2s"></i><i class="dot" style="--d:.25s"></i><i class="dot" style="--d:.3s"></i><i class="dot" style="--d:.35s"></i><i class="dot" style="--d:.4s"></i><i class="dot" style="--d:.45s"></i><i class="dot" style="--d:.5s"></i><i class="dot" style="--d:.55s"></i>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="center reveal">More Than Just Channels</h2>
+      <div class="grid g4" style="margin-top:28px">
+        <article class="box reveal tappable"><div class="ico" aria-hidden="true">🐝</div><h3>Buzz</h3><p>Instant voice conversations inside channels.</p></article>
+        <article class="box reveal tappable" style="--d:.08s"><div class="ico" aria-hidden="true">📁</div><h3>File Management</h3><p>Share and organize learning materials and resources.</p></article>
+        <article class="box reveal tappable" style="--d:.16s"><div class="ico" aria-hidden="true">🤖</div><h3>AI Agents</h3><p>AI assistants that summarize discussions and answer questions.</p></article>
+        <article class="box reveal tappable" style="--d:.24s"><div class="ico" aria-hidden="true">📝</div><h3>Assignments</h3><p>Share and organize learning materials and resources.</p></article>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:20px">
+      <h2 class="center reveal" style="margin-bottom:24px">Got a Question? We Have an Answer</h2>
+      <details class="faq"><summary>When should I use Channels?</summary><p>Whenever a group needs its own place to talk: a course, a cohort, a project or a department.</p></details>
+      <details class="faq"><summary>What can I do in a channel?</summary><p>Post messages, reply in threads, share files, start a Buzz voice call and send announcements.</p></details>
+      <details class="faq"><summary>Are Channels free?</summary><p>Yes. Organized learning channels are included in the free Starter plan.</p></details>
+    </section>
+
+    <section class="cta-band reveal">
+      <h2>Organize Your Learning Community with Channels</h2>
+      <p class="lead">Create structured spaces where students, educators, and teams can collaborate effectively.</p>
+      <a class="btn btn-solid" href="#">Get started for free</a> <a class="btn btn-ghost" href="#">Contact Sales</a>
+    </section>
+  </main>
+  <footer>Whimsical prototype of zedu.chat/products/channels · HNG15 Task 2 · Franchesca Meju · <a href="index.html">Home</a></footer>
+  <script src="whimsy.js"></script>
+  <style>@media (max-width: 900px) { #threadsec { grid-template-columns: 1fr !important; } }</style>
+</body>
+</html>

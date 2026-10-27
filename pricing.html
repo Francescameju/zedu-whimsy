@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pricing — Zedu (whimsical prototype)</title>
+<link rel="icon" href="zedu-logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="shared.css" />
+<style>
+  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1150px; margin: 10px auto 0; padding: 0 16px; }
+  .plan { position: relative; border-radius: 26px; padding: 30px 26px; border: 1px solid var(--line); background: #fff; }
+  .plan.pro { border: 2px solid var(--purple); box-shadow: 0 24px 50px -28px rgba(113,65,248,.55); }
+  .plan h3 { font-size: 24px; margin: 0 0 6px; }
+  .plan .for { color: var(--muted); margin: 0 0 18px; min-height: 48px; }
+  .price { font-size: 46px; font-weight: 900; letter-spacing: -.02em; }
+  .price small { font-size: 17px; color: var(--muted); font-weight: 700; }
+  .plan ul { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 10px; color: #344054; }
+  .plan li::before { content: "✓"; color: var(--purple); font-weight: 900; margin-right: 10px; }
+  .plan .btn { width: 100%; justify-content: center; margin-top: 22px; }
+  .nocard { color: var(--muted); font-size: 14px; margin-top: 6px; }
+
+  /* Starter: a coin drops into a piggy bank — "₦0, no credit card needed". */
+  .piggy { position: absolute; right: 22px; top: 22px; width: 64px; height: 64px; }
+  .piggy .pig { font-size: 44px; position: absolute; bottom: 0; left: 6px; }
+  .piggy .coin { position: absolute; left: 22px; top: -18px; font-size: 22px; opacity: 0; }
+  .plan.in .piggy .coin, .plan.tap .piggy .coin { animation: drop .9s cubic-bezier(.5,0,.6,1) .3s; }
+  .plan.in .piggy .pig, .plan.tap .piggy .pig { animation: oink .4s ease 1.1s; }
+  @keyframes drop { 0% { opacity: 1; transform: translateY(0); } 80% { opacity: 1; transform: translateY(34px) scale(.8); } 100% { opacity: 0; transform: translateY(40px) scale(.5); } }
+  @keyframes oink { 50% { transform: scale(1.12, .92); } }
+
+  /* Pro: the "Most Popular" sticker peels and wiggles. */
+  .sticker { position: absolute; top: -16px; right: 22px; background: #fdb022; color: #101828; font-weight: 900; font-size: 14px; padding: 7px 14px; border-radius: 10px; transform: rotate(6deg); box-shadow: 0 6px 12px rgba(16,24,40,.15); }
+  .plan.in .sticker, .plan.tap .sticker { animation: peel .8s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes peel { 30% { transform: rotate(-6deg) scale(1.12); } 60% { transform: rotate(10deg); } }
+
+  /* Enterprise: a handshake when tapped. */
+  .shake { position: absolute; right: 22px; top: 24px; font-size: 38px; }
+  .plan.tap .shake { animation: hand .6s ease 2; }
+  @keyframes hand { 50% { transform: rotate(-14deg); } }
+
+  .note-hand { text-align: center; font-family: "Caveat", cursive; color: var(--purple); font-size: 24px; margin: 40px 16px 0; }
+
+  /* Comparison table: ticks draw themselves as the table scrolls in. */
+  .compare { max-width: 1000px; margin: 0 auto; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 560px; }
+  th, td { padding: 14px 12px; border-bottom: 1px solid var(--line); text-align: center; font-size: 15px; }
+  th:first-child, td:first-child { text-align: left; color: #344054; }
+  thead th { font-size: 17px; }
+  thead th.pro { color: var(--purple); }
+  .cat td { background: #fafaff; font-weight: 900; color: var(--purple); text-align: left; }
+  .tick { width: 22px; height: 22px; vertical-align: middle; }
+  .tick path { fill: none; stroke: var(--purple); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 30; stroke-dashoffset: 30; transition: stroke-dashoffset .5s ease; transition-delay: var(--d, 0s); }
+  .compare.in .tick path { stroke-dashoffset: 0; }
+  .dash { color: #d0d5dd; }
+
+  @media (max-width: 900px) { .plans { grid-template-columns: 1fr; } .plan .for { min-height: 0; } }
+  @media (prefers-reduced-motion: reduce) { .tick path { stroke-dashoffset: 0; } }
+</style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="logo" href="index.html" aria-label="Zedu home"><img src="zedu-logo.png" alt="Zedu" /></a>
+    <div class="links">
+      <a href="index.html">Home</a><a href="channels.html">Channels</a><a href="files.html">Files</a><a href="bootcamps.html">Bootcamps</a>
+      <a href="pricing.html" class="here">Pricing</a><a href="about.html">About Us</a><a href="download.html">Download</a>
+    </div>
+    <div class="nav-right"><a class="login" href="#">Log in</a><a class="btn btn-ghost" href="#">Contact Sales</a><a class="btn btn-solid" href="#">Get Started</a></div>
+    <button class="menu-btn" aria-label="Open menu">☰</button>
+  </nav>
+
+  <main>
+    <section class="page-hero">
+      <h1>Simple, Flexible <span class="squig">Pricing<svg viewBox="0 0 400 22" preserveAspectRatio="none" aria-hidden="true"><path d="M3 14 C 40 2, 70 22, 110 12 S 180 2, 220 13 S 300 22, 340 10 S 385 6, 397 12"/></svg></span> for Education</h1>
+      <p class="lead" style="margin-left:auto;margin-right:auto">Flexible plans for educators, bootcamps, and institutions building structured learning environments with collaboration and AI support.</p>
+    </section>
+
+    <section class="plans">
+      <article class="plan watch tappable" aria-label="Starter plan">
+        <div class="piggy" aria-hidden="true"><span class="coin">🪙</span><span class="pig">🐷</span></div>
+        <h3>Starter</h3>
+        <p class="for">Best for small classes and educators starting with Zedu.</p>
+        <div class="price">₦0 <small>/month</small></div>
+        <div class="nocard">No credit card needed</div>
+        <a class="btn btn-ghost" href="#">Get Started Free</a>
+        <ul><li>Up to 3 cohorts</li><li>Organized learning channels</li><li>Basic messaging and threads</li><li>File sharing</li><li>Basic notifications</li><li>Limited AI assistance</li></ul>
+      </article>
+      <article class="plan pro watch tappable" aria-label="Pro plan, most popular">
+        <span class="sticker">⭐ Most Popular</span>
+        <h3>Pro</h3>
+        <p class="for">Best for bootcamps and structured programs.</p>
+        <div class="price">₦20K <small>/month</small></div>
+        <div class="nocard">Everything in Starter, and</div>
+        <a class="btn btn-solid" href="#">Start Pro Plan</a>
+        <ul><li>Unlimited cohorts</li><li>Live classes and collaboration tools</li><li>AI study assistants</li><li>Assignment and cohort management</li><li>Admin moderation tools</li></ul>
+      </article>
+      <article class="plan watch tappable" aria-label="Enterprise plan">
+        <span class="shake" aria-hidden="true">🤝</span>
+        <h3>Enterprise</h3>
+        <p class="for">Flexible pricing for Universities, large programs, and institutions.</p>
+        <div class="price">Let's Talk</div>
+        <div class="nocard">Everything in Pro, and</div>
+        <a class="btn btn-ghost" href="#">Contact Sales</a>
+        <ul><li>Advanced AI agents and automation</li><li>Institution-level workspace control</li><li>Security and compliance tools</li><li>Custom integrations</li><li>Dedicated onboarding</li><li>Priority support</li></ul>
+      </article>
+    </section>
+
+    <p class="note-hand">Launching a bootcamp? Let's build a pricing model that fits your cohort size ✏️</p>
+
+    <section class="section">
+      <h2 class="center reveal">Compare different plans</h2>
+      <div class="compare watch" style="margin-top:26px">
+        <table>
+          <thead><tr><th>Plan features</th><th>Starter</th><th class="pro">Pro</th><th>Enterprise</th></tr></thead>
+          <tbody>
+            <tr class="cat"><td colspan="4">Workspace &amp; Community</td></tr>
+            <tr><td>Workspaces</td><td>1</td><td>Unlimited</td><td>Unlimited</td></tr>
+            <tr><td>Cohorts / Bootcamps</td><td>3</td><td>Unlimited</td><td>Unlimited</td></tr>
+            <tr><td>Teachers / Admins</td><td>Up to 5</td><td>Up to 50</td><td>Unlimited</td></tr>
+            <tr class="cat"><td colspan="4">Communication &amp; Collaboration</td></tr>
+            <tr><td>Direct Messaging</td><td><svg class="tick" viewBox="0 0 24 24"><path d="M5 12 L10 17 L19 7"/></svg></td><td><svg class="tick" viewBox="0 0 24 24" style="--d:.1s"><path d="M5 12 L10 17 L19 7"/></svg></td><td><svg class="tick" viewBox="0 0 24 24" style="--d:.2s"><path d="M5 12 L10 17 L19 7"/></svg></td></tr>
+            <tr><td>Voice &amp; Video Calls</td><td class="dash">—</td><td><svg class="tick" viewBox="0 0 24 24" style="--d:.3s"><path d="M5 12 L10 17 L19 7"/></svg></td><td><svg class="tick" viewBox="0 0 24 24" style="--d:.4s"><path d="M5 12 L10 17 L19 7"/></svg></td></tr>
+            <tr><td>Class Recordings</td><td class="dash">—</td><td><svg class="tick" viewBox="0 0 24 24" style="--d:.5s"><path d="M5 12 L10 17 L19 7"/></svg></td><td><svg class="tick" viewBox="0 0 24 24" style="--d:.6s"><path d="M5 12 L10 17 L19 7"/></svg></td></tr>
+            <tr class="cat"><td colspan="4">Automation &amp; AI</td></tr>
+            <tr><td>AI Study Assistant</td><td>Limited</td><td>Advanced</td><td>Advanced</td></tr>
+            <tr><td>Workflow Automation</td><td class="dash">—</td><td class="dash">—</td><td><svg class="tick" viewBox="0 0 24 24" style="--d:.7s"><path d="M5 12 L10 17 L19 7"/></svg></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:20px">
+      <h2 class="center reveal" style="margin-bottom:24px">Got a Question? We Have an Answer</h2>
+      <details class="faq"><summary>How does pricing work for educational institutions?</summary><p>Starter is free for up to 3 cohorts. Pro is ₦20K a month with unlimited cohorts. Universities and large programs get Enterprise pricing built around their size. Talk to sales.</p></details>
+      <details class="faq"><summary>Do I need a credit card to start?</summary><p>No. The Starter plan is ₦0 a month and needs no credit card.</p></details>
+      <details class="faq"><summary>What do I get when I move to Pro?</summary><p>Everything in Starter, plus unlimited cohorts, live classes, AI study assistants, assignment and cohort management, and admin moderation tools.</p></details>
+    </section>
+
+    <section class="cta-band reveal">
+      <h2>Start Building Structured Learning Today</h2>
+      <p class="lead">Create organized channels, manage cohorts, and bring AI into your learning environment.</p>
+      <a class="btn btn-solid" href="#">Get started for free</a> <a class="btn btn-ghost" href="#">Contact Sales</a>
+    </section>
+  </main>
+  <footer>Whimsical prototype of zedu.chat/pricing · HNG15 Task 2 · Franchesca Meju · <a href="index.html">Home</a></footer>
+  <script src="whimsy.js"></script>
+</body>
+</html>

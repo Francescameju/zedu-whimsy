@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>File Management — Zedu (whimsical prototype)</title>
+<link rel="icon" href="zedu-logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="shared.css" />
+<style>
+  /* Search types itself, then the matching file lights up. */
+  .finder { max-width: 640px; margin: 10px auto 0; padding: 0 16px; }
+  .search { display: flex; align-items: center; gap: 10px; border: 2px solid var(--purple-soft); border-radius: 14px; padding: 12px 16px; background: #fff; font-size: 17px; }
+  .caret { display: inline-block; width: 2px; height: 20px; background: var(--purple); animation: blinkc 1s steps(2) infinite; vertical-align: middle; }
+  @keyframes blinkc { 50% { opacity: 0; } }
+  .files { margin-top: 12px; display: grid; gap: 8px; }
+  .file { display: flex; align-items: center; gap: 12px; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; background: #fff; transition: background .3s, border-color .3s, transform .3s, opacity .3s; }
+  .file small { margin-left: auto; color: var(--muted); }
+  .finder.searching .file:not(.hit) { opacity: .35; }
+  .file.hit.found { background: var(--purple-soft); border-color: var(--purple); transform: scale(1.02); }
+  .replay { background: none; border: 0; color: var(--purple); font-family: "Caveat", cursive; font-size: 22px; margin-top: 10px; }
+
+  /* Folders open as they scroll in (and on tap). */
+  .folder { position: relative; width: 70px; height: 54px; margin-bottom: 6px; }
+  .folder .back { position: absolute; inset: 8px 0 0; background: #b9a4ff; border-radius: 8px; }
+  .folder .tab { position: absolute; left: 0; top: 0; width: 30px; height: 14px; background: #b9a4ff; border-radius: 6px 6px 0 0; }
+  .folder .paper { position: absolute; left: 12px; right: 12px; top: 10px; height: 34px; background: #fff; border-radius: 4px; transform: translateY(10px); transition: transform .5s cubic-bezier(.34,1.56,.64,1) .2s; }
+  .folder .front { position: absolute; inset: 18px 0 0; background: var(--purple); border-radius: 8px; transform-origin: bottom; transition: transform .5s ease; }
+  .box.in .folder .paper, .box.tap .folder .paper { transform: translateY(-6px); }
+  .box.in .folder .front, .box.tap .folder .front { transform: skewX(-10deg) scaleY(.8); }
+
+  /* Secure sharing: the padlock clicks shut. */
+  .lockwrap { font-size: 30px; display: inline-block; }
+  .box.in .lockwrap, .box.tap .lockwrap { animation: click .5s ease .3s; }
+  @keyframes click { 40% { transform: translateY(3px) scale(.9); } 70% { transform: scale(1.12); } }
+
+  @media (prefers-reduced-motion: reduce) { .caret { display: none; } }
+</style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="logo" href="index.html" aria-label="Zedu home"><img src="zedu-logo.png" alt="Zedu" /></a>
+    <div class="links">
+      <a href="index.html">Home</a><a href="channels.html">Channels</a><a href="files.html" class="here">Files</a><a href="bootcamps.html">Bootcamps</a>
+      <a href="pricing.html">Pricing</a><a href="about.html">About Us</a><a href="download.html">Download</a>
+    </div>
+    <div class="nav-right"><a class="login" href="#">Log in</a><a class="btn btn-ghost" href="#">Contact Sales</a><a class="btn btn-solid" href="#">Get Started</a></div>
+    <button class="menu-btn" aria-label="Open menu">☰</button>
+  </nav>
+
+  <main>
+    <section class="page-hero">
+      <h1>Organize Learning Materials <span class="squig">In One Place<svg viewBox="0 0 400 22" preserveAspectRatio="none" aria-hidden="true"><path d="M3 14 C 40 2, 70 22, 110 12 S 180 2, 220 13 S 300 22, 340 10 S 385 6, 397 12"/></svg></span></h1>
+      <p class="lead" style="margin-left:auto;margin-right:auto">Store, share, and collaborate on course materials, assignments, and resources directly inside Zedu. Everything stays connected to the conversations and classes where it belongs.</p>
+      <a class="btn btn-solid" href="#">Start Organising Files</a>
+    </section>
+
+    <section class="finder" id="finder" aria-label="Example: searching for a file finds it instantly">
+      <div class="search"><span aria-hidden="true">🔍</span><span id="typed"></span><span class="caret" aria-hidden="true"></span></div>
+      <div class="files">
+        <div class="file"><span aria-hidden="true">📄</span>Course outline.pdf<small>Maths 101</small></div>
+        <div class="file hit" id="hit"><span aria-hidden="true">📊</span>Week 4 slides.pptx<small>Design track</small></div>
+        <div class="file"><span aria-hidden="true">🎥</span>Live class recording.mp4<small>Cohort 12</small></div>
+        <div class="file"><span aria-hidden="true">📝</span>Assignment 2 brief.docx<small>Cohort 12</small></div>
+      </div>
+      <button class="replay" id="replay" type="button">↻ search again</button>
+    </section>
+
+    <section class="section">
+      <h2 class="center reveal">Organize and Collaborate on Learning Files</h2>
+      <p class="lead center reveal" style="margin:14px auto 0">Structure course materials and work together seamlessly in one connected workspace</p>
+      <div class="grid g2" style="margin-top:30px">
+        <article class="box watch tappable"><div class="folder" aria-hidden="true"><i class="tab"></i><i class="back"></i><i class="paper"></i><i class="front"></i></div><h3>Store Course Materials in Organized Spaces</h3><p>Organize files by courses, departments, or cohorts for easy access. Store lectures, assignments, and resources in one central workspace.</p></article>
+        <article class="box reveal tappable" style="--d:.1s"><div class="ico" aria-hidden="true">🤝</div><h3>Collaborate on Files with Your Class</h3><p>Share files directly in channels to keep context and discussions connected. Collaborate on group projects with shared documents and resources.</p></article>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:10px">
+      <h2 class="center reveal">Smart, Secure, and Scalable File Management</h2>
+      <div class="grid g3" style="margin-top:28px">
+        <article class="box reveal tappable"><div class="ico" aria-hidden="true">⚡</div><h3>Find Files Instantly</h3><p>Search across courses, topics, and files in seconds.</p></article>
+        <article class="box watch tappable" style="--d:.1s"><div class="ico"><span class="lockwrap" aria-hidden="true">🔒</span></div><h3>Share Files Securely</h3><p>Control all access and keep resources protected.</p></article>
+        <article class="box reveal tappable" style="--d:.2s"><div class="ico" aria-hidden="true">🎓</div><h3>Built for Learning Workflows</h3><p>Manage coursework and collaboration all in one place.</p></article>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:10px">
+      <h2 class="center reveal">Connected to the Rest of Zedu</h2>
+      <div class="grid g4" style="margin-top:28px">
+        <article class="box reveal tappable"><div class="ico" aria-hidden="true">🐝</div><h3>Buzz</h3><p>Discuss documents live with voice conversations.</p></article>
+        <article class="box reveal tappable" style="--d:.08s"><div class="ico" aria-hidden="true">#</div><h3>Channels</h3><p>Share course files directly inside class discussions.</p></article>
+        <article class="box reveal tappable" style="--d:.16s"><div class="ico" aria-hidden="true">🤖</div><h3>AI Agents</h3><p>Summarize documents and highlight key information.</p></article>
+        <article class="box reveal tappable" style="--d:.24s"><div class="ico" aria-hidden="true">📝</div><h3>Assignments</h3><p>Attach files to coursework and project submissions.</p></article>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:20px">
+      <h2 class="center reveal" style="margin-bottom:24px">Got a Question? We Have an Answer</h2>
+      <details class="faq"><summary>Can I share files directly inside class discussions?</summary><p>Yes. Share files straight into a channel so the file and the conversation about it stay together.</p></details>
+      <details class="faq"><summary>How can I find a file quickly later?</summary><p>Use search. It looks across courses, topics, and files in seconds.</p></details>
+      <details class="faq"><summary>Can students collaborate on shared resources?</summary><p>Yes. Group projects can use shared documents and resources inside Zedu.</p></details>
+    </section>
+
+    <section class="cta-band reveal">
+      <h2>Manage Learning Materials Without the Chaos</h2>
+      <p class="lead">Keep course resources organized, searchable, and accessible for every student and educator.</p>
+      <a class="btn btn-solid" href="#">Get started for free</a> <a class="btn btn-ghost" href="#">Contact Sales</a>
+    </section>
+  </main>
+  <footer>Whimsical prototype of zedu.chat/products/file-management · HNG15 Task 2 · Franchesca Meju · <a href="index.html">Home</a></footer>
+  <script src="whimsy.js"></script>
+  <script>
+    (function () {
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const finder = document.getElementById("finder"), typed = document.getElementById("typed"), hit = document.getElementById("hit");
+      const Q = "week 4 slides";
+      function run() {
+        finder.classList.remove("searching"); hit.classList.remove("found"); typed.textContent = "";
+        if (reduce) { typed.textContent = Q; finder.classList.add("searching"); hit.classList.add("found"); return; }
+        let i = 0;
+        const t = setInterval(() => {
+          typed.textContent = Q.slice(0, ++i);
+          if (i === 4) finder.classList.add("searching");
+          if (i >= Q.length) { clearInterval(t); hit.classList.add("found"); }
+        }, 90);
+      }
+      const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { io.disconnect(); setTimeout(run, 400); } }, { threshold: .5 });
+      io.observe(finder);
+      document.getElementById("replay").addEventListener("click", run);
+    })();
+  </script>
+</body>
+</html>
