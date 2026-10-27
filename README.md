@@ -18,3 +18,14 @@ Built by Franchesca Meju (Team Cybertron).
 - **Download** (`download.html`): a phone peeks out of a school backpack, the store buttons land like stickers, one paper plane carries the "10,000+ students" banner, and each feature icon does one small thing when it scrolls into view.
 
 Phone-first: every effect plays on scroll or tap (no hover needed), only one or two things move at a time, and constant motion is turned off on small screens.
+
+## App screen: subtle delight (`app.html`)
+Feedback said the marketing pages were too dramatic, and most Zedu use is on phones, so the app screen uses small touches borrowed from well-loved apps:
+- **Reactions pop with a floating "+1"** when you tap them (Slack, Discord).
+- **The channel highlight slides** to the channel you pick instead of jumping (Linear, Notion).
+- **Date labels settle in** as you scroll ("Yesterday", "Today") (WhatsApp, iMessage).
+- **@channel gets one soft highlight sweep** the first time you see it.
+- **Tapping the locked message box makes the lock wiggle** and suggests #general (the iOS "wrong passcode" shake, but friendly).
+- **Start Buzz**: the headset gives a short buzz.
+
+Nothing moves on its own except a one-time settle; everything else answers a tap. Names and messages are samples, not real people.
