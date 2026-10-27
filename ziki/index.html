@@ -195,6 +195,37 @@ details.handled[open] summary { border-bottom: 1px solid var(--divider); }
 .compare .after { background: var(--ok-bg); }
 .compare b { display: block; margin-bottom: 4px; }
 
+/* ---------- Agent buddy: the agent's mood follows your queue ---------- */
+.buddy { display: flex; align-items: center; gap: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 12px 16px; margin-bottom: 18px; box-shadow: var(--shadow); }
+.bot { width: 66px; height: 66px; flex-shrink: 0; background: none; border: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+.bot svg { width: 100%; height: 100%; overflow: visible; }
+.bot .body { transform-box: view-box; transform-origin: 32px 58px; animation: bob 3.2s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-3px); } }
+.bot .eye { transform-box: fill-box; transform-origin: center; animation: blink 4.5s infinite; transition: opacity .2s; }
+@keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+.bot .happy-eyes, .bot .sweat, .bot .zz { opacity: 0; transition: opacity .3s; }
+.bot .lamp { fill: #8fc9ff; transition: fill .3s; }
+.bot.worried .lamp { fill: #f04438; animation: lamp .9s ease-in-out infinite; }
+@keyframes lamp { 50% { opacity: .35; } }
+.bot.worried .sweat { opacity: 1; animation: drip 1.6s ease-in infinite; }
+@keyframes drip { 0% { transform: translateY(0); } 80% { transform: translateY(6px); opacity: 1; } 100% { transform: translateY(8px); opacity: 0; } }
+.bot.happy .eye { opacity: 0; }
+.bot.happy .happy-eyes { opacity: 1; }
+.bot.sleep .eye { transform: scaleY(.12); animation: none; }
+.bot.sleep .body { animation: bob 5s ease-in-out infinite; }
+.bot.sleep .zz { opacity: 1; animation: zz 2.4s ease-in-out infinite; }
+@keyframes zz { 0% { transform: translate(0, 4px); opacity: 0; } 40% { opacity: 1; } 100% { transform: translate(6px, -8px); opacity: 0; } }
+.bot.nod .body { animation: nod .55s ease; }
+@keyframes nod { 30% { transform: translateY(4px) rotate(-4deg); } 65% { transform: translateY(-4px) rotate(3deg); } }
+.bot .arm-r { transform-box: view-box; transform-origin: 52px 33px; }
+.bot.wave .arm-r { animation: wave .9s ease; }
+@keyframes wave { 20%, 60% { transform: rotate(-55deg); } 40%, 80% { transform: rotate(-25deg); } }
+.say { position: relative; flex: 1; min-width: 0; background: var(--tint); border-radius: 14px; padding: 10px 14px; font-size: 14.5px; font-weight: 600; line-height: 1.45; }
+.say::before { content: ""; position: absolute; left: -7px; top: 50%; margin-top: -7px; border: 7px solid transparent; border-left: 0; border-right-color: var(--tint); }
+.say small { display: block; font-size: 12px; color: var(--muted); font-weight: 700; margin-bottom: 1px; }
+.say.pop { animation: pop .3s cubic-bezier(.34,1.56,.64,1); }
+.fly { position: fixed; z-index: 60; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--electric-strong); color: #fff; display: grid; place-items: center; font-size: 14px; pointer-events: none; box-shadow: 0 6px 16px rgba(46,111,239,.4); transition: transform .75s cubic-bezier(.45,-.25,.55,1), opacity .2s .6s; }
+
 .theme-btn { background: none; border: 1px solid #263b63; color: #c9d6ef; border-radius: 10px; padding: 8px 10px; font-size: 13px; font-weight: 600; margin-top: 8px; }
 
 /* ---------- Phone ---------- */
@@ -256,6 +287,28 @@ details.handled[open] summary { border-bottom: 1px solid var(--divider); }
       <p class="sub">Your agent only stops for you here. Everything else it handles on its own and reports below. Answer in one tap, and teach it a rule so it asks less next time.</p>
 
       <div class="summary" id="summary"></div>
+
+      <div class="buddy">
+        <button class="bot" id="bot" type="button" aria-label="Your agent, Claude-Fran. Tap to say hi.">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <g class="body">
+              <line x1="32" y1="14" x2="32" y2="7" stroke="#0b1733" stroke-width="2.5" stroke-linecap="round"/>
+              <circle class="lamp" cx="32" cy="5.5" r="4"/>
+              <rect x="4" y="31" width="10" height="5" rx="2.5" fill="#2e6fef"/>
+              <rect class="arm-r" x="50" y="31" width="10" height="5" rx="2.5" fill="#2e6fef"/>
+              <rect x="10" y="14" width="44" height="36" rx="14" fill="#3978f6"/>
+              <rect x="16" y="21" width="32" height="20" rx="9" fill="#0b1733"/>
+              <ellipse class="eye" cx="25" cy="31" rx="3.2" ry="4" fill="#8fc9ff"/>
+              <ellipse class="eye" cx="39" cy="31" rx="3.2" ry="4" fill="#8fc9ff"/>
+              <path class="happy-eyes" d="M21.5 33q3.5-5 7 0M35.5 33q3.5-5 7 0" stroke="#8fc9ff" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+              <path class="sweat" d="M53 13q3.5 4.5 0 7q-3.5-2.5 0-7z" fill="#8fc9ff"/>
+              <rect x="21" y="50" width="22" height="8" rx="4" fill="#2e6fef"/>
+            </g>
+            <text class="zz" x="50" y="10" font-size="11" font-weight="800" fill="#8fc9ff" font-family="DM Sans, sans-serif">z</text>
+          </svg>
+        </button>
+        <div class="say" id="say" aria-live="polite"></div>
+      </div>
 
       <div class="goal">
         <div class="grow">
@@ -380,6 +433,8 @@ const clearEl = document.getElementById("clear");
 const toastEl = document.getElementById("toast");
 let open = decisions.length;
 const t0 = Date.now();
+let lastBtn = null;
+document.addEventListener("click", e => { const b = e.target.closest("button"); lastBtn = b ? b.getBoundingClientRect() : null; }, true);
 
 function fmt(s) {
   if (s <= 0) return "expired";
@@ -422,6 +477,7 @@ function answer(d, el, act) {
     ${d.rule && what === "approve" ? `<div class="rule-offer"><span>Don't ask next time? <b>${d.rule}</b></span><button class="b chip" type="button" data-mkrule>Make it a rule</button></div>` : ""}`;
   setCount(--open);
   toast(act[2]);
+  sendToBot(lastBtn, act[2]);
   if (d.id === "bid" && what === "approve") bumpGoal();
   let timer = setTimeout(() => dismiss(d, el), d.rule && what === "approve" ? 9000 : 4500);
   el.querySelector(".undo").addEventListener("click", () => {
@@ -453,6 +509,7 @@ function setCount(n) {
   document.querySelectorAll("[data-count]").forEach(b => { b.textContent = n; b.style.display = n ? "" : "none"; });
   const hot = decisions.filter(d => !d.answered && d.secs != null && left(d) < 300).length;
   const risk = decisions.filter(d => !d.answered && /released|next agent/.test(d.cost || "")).length;
+  if (!busy) mood();
   document.getElementById("summary").innerHTML =
     (n ? `<span class="pill info">${n} waiting on you</span>` : `<span class="pill ok">All clear</span>`) +
     (hot ? `<span class="pill bad">${hot} expiring in minutes</span>` : "") +
@@ -470,8 +527,9 @@ function tick() {
     c.querySelector("[data-left]").textContent = s ? fmt(s) + " left" : "Expired";
     c.className = "clock" + (s < 300 ? " hot" : s < 4 * 3600 ? " warm" : "");
     c.querySelector(".fg").style.strokeDashoffset = 50.3 * (1 - s / d.total);
-    if (!s && d.id === "offer") { d.answered = true; d.el.querySelector(".acts").innerHTML = `<button class="b ghost" type="button" disabled>Offer expired, went to the next agent</button>`; setCount(--open); }
+    if (!s && d.id === "offer") { d.answered = true; d.el.querySelector(".acts").innerHTML = `<button class="b ghost" type="button" disabled>Offer expired, went to the next agent</button>`; setCount(--open); react("worried", "Too slow! #1402 went to another agent 🐢", 2600); }
   });
+  if (!busy) mood(true);
 }
 
 let goalOn = false;
@@ -486,6 +544,50 @@ function toast(msg, api) {
   toastEl.classList.add("show");
   clearTimeout(toast.t); toast.t = setTimeout(() => toastEl.classList.remove("show"), 2600);
 }
+
+// ----- Agent buddy -----
+const bot = document.getElementById("bot"), say = document.getElementById("say");
+const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let busy = false, lastLine = "";
+function speak(text, cls) {
+  const html = `<small>${AGENT}</small>${text}`;
+  if (html === lastLine) return;
+  lastLine = html; say.innerHTML = html;
+  if (cls !== "quiet") { say.classList.remove("pop"); void say.offsetWidth; say.classList.add("pop"); }
+}
+function setBot(state) { bot.classList.remove("worried", "happy", "sleep"); if (state) bot.classList.add(state); }
+// Mood comes from the queue: nervous when something is about to run out, asleep when nothing needs you.
+function mood(fromTick) {
+  const waiting = decisions.filter(d => !d.answered);
+  const hot = waiting.filter(d => d.secs != null && left(d) > 0 && left(d) < 300).sort((a, b) => left(a) - left(b))[0];
+  if (!waiting.length) { setBot("sleep"); speak("All done, thank you! I'll only ping you if I get stuck. 😴"); }
+  else if (hot) { setBot("worried"); speak(`Psst… the offer on #${hot.issue.n} runs out in <b>${left(hot)}s</b>. Take it or pass? 😬`, fromTick ? "quiet" : ""); }
+  else { setBot(""); speak(`${waiting.length} thing${waiting.length > 1 ? "s" : ""} need${waiting.length > 1 ? "" : "s"} you. Nothing's on fire, take your time ☕`); }
+}
+function react(state, text, ms) {
+  busy = true; setBot(state); speak(text);
+  clearTimeout(react.t); react.t = setTimeout(() => { busy = false; mood(); }, ms || 2200);
+}
+function bump(cls) { bot.classList.remove(cls); void bot.offsetWidth; bot.classList.add(cls); setTimeout(() => bot.classList.remove(cls), 900); }
+// A little message flies from the button you tapped to the agent, then it nods.
+function sendToBot(btn, text) {
+  const done = () => { bump("nod"); react("happy", "Got it! " + text.replace(/^Answer sent: /, "You said: ") + " 🙌"); };
+  if (calm || !btn) return done();
+  const a = btn, b = bot.getBoundingClientRect();
+  if (!a.width || b.bottom < 0 || b.top > innerHeight) return done();
+  const dot = document.createElement("div");
+  dot.className = "fly"; dot.textContent = "✉";
+  dot.style.transform = `translate(${a.left + a.width / 2 - 15}px, ${a.top + a.height / 2 - 15}px)`;
+  document.body.appendChild(dot);
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    dot.style.transform = `translate(${b.left + b.width / 2 - 15}px, ${b.top + b.height / 2 - 15}px) scale(.5)`;
+    dot.style.opacity = "0";
+  }));
+  setTimeout(() => { dot.remove(); done(); }, 760);
+}
+const hellos = ["Hi Francesca! 👋", "I check the code before every review. Promise. 🔍", "Answer a card and I'll get straight back to work.", "Every rule you add is one less question for you.", "Beep boop. I mean… hello! 🤖"];
+let hi = 0;
+bot.addEventListener("click", () => { bump("wave"); react(bot.classList.contains("sleep") ? "sleep" : "happy", hellos[hi++ % hellos.length], 2400); });
 
 decisions.forEach(d => cardsEl.appendChild(render(d)));
 setCount(open); tick(); setInterval(tick, 1000);
