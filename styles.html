@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Zedu — three whimsical directions</title>
+<link rel="icon" href="zedu-logo.png" />
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; font-family: "Lato", system-ui, sans-serif; color: #101828; background: #faf8ff; }
+  main { max-width: 980px; margin: 0 auto; padding: 40px 16px; }
+  h1 { font-size: clamp(28px, 4vw, 40px); margin: 0 0 8px; }
+  p.lead { color: #475467; font-size: 18px; margin: 0 0 28px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  a.card { display: block; text-decoration: none; color: inherit; border-radius: 22px; padding: 24px; background: #fff; border: 1px solid #eaecf0; transition: transform .2s, box-shadow .2s; }
+  a.card:hover, a.card:focus { transform: translateY(-4px); box-shadow: 0 16px 32px -18px rgba(113,65,248,.5); }
+  .emoji { font-size: 40px; }
+  h2 { margin: 10px 0 6px; font-size: 21px; }
+  .card p { color: #475467; line-height: 1.55; margin: 0 0 10px; }
+  .tag { display: inline-block; font-size: 13px; font-weight: 700; color: #7141f8; background: #ece6ff; border-radius: 999px; padding: 4px 10px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Zedu, three playful directions</h1>
+  <p class="lead">The same Zedu homepage in three styles borrowed from well-loved sites. Open each on your phone and pick a favourite.</p>
+  <div class="grid">
+    <a class="card" href="duolingo-style.html"><div class="emoji">🦉</div><h2>Duolingo-style</h2><p>Zee, a friendly chat-bubble mascot, waves and reacts when tapped. Chunky buttons and a "set up your cohort in 4 steps" progress bar.</p><span class="tag">fun, energetic</span></a>
+    <a class="card" href="headspace-style.html"><div class="emoji">🌙</div><h2>Headspace-style</h2><p>Soft pastel colours and round characters that slowly breathe. A one-tap breathing guide: "Fewer tools. Calmer cohorts."</p><span class="tag">calm, gentle</span></a>
+    <a class="card" href="paperplanes-style.html"><div class="emoji">✈️</div><h2>Paper Planes-style</h2><p>A dreamy sky. Stamp your city and throw a paper-plane hello. Your cohort "catches" it as a message.</p><span class="tag">dreamy, interactive</span></a>
+  </div>
+</main>
+</body>
+</html>
