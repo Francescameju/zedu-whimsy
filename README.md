@@ -13,4 +13,4 @@ Built by Franchesca Meju (Team Cybertron).
 
 ## Pages in the submission
 - **Home** (`index.html`): the headline bounces in, "Learning" gets a hand-drawn squiggle, the stars pop in, a few chat bubbles drift up and stop, one paper plane flies across once, and "Try for free" throws graduation-cap confetti.
-- **Pricing** (`pricing.html`): a coin drops into a piggy bank on the free ₦0 plan, the "Most Popular" sticker wiggles, ticks draw themselves in the comparison table, and FAQ answers slide open. Each effect plays once on scroll or on tap.
+- **Pricing** (`pricing.html`): a gold ₦ coin flips over to show "FREE" on the ₦0 plan, the "Most Popular" sticker wiggles, ticks draw themselves in the comparison table, and FAQ answers slide open. Each effect plays once on scroll or on tap.
