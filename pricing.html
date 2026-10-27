@@ -25,15 +25,22 @@
   .piggy { position: absolute; right: 22px; top: 22px; width: 64px; height: 64px; }
   .piggy .pig { font-size: 44px; position: absolute; bottom: 0; left: 6px; }
   .piggy .coin { position: absolute; left: 22px; top: -18px; font-size: 22px; opacity: 0; }
-  .plan.in .piggy .coin, .plan.tap .piggy .coin { animation: drop .9s cubic-bezier(.5,0,.6,1) .3s; }
-  .plan.in .piggy .pig, .plan.tap .piggy .pig { animation: oink .4s ease 1.1s; }
+  .plan.in .piggy .coin { animation: drop .9s cubic-bezier(.5,0,.6,1) .3s; }
+  .plan.in .piggy .pig { animation: oink .4s ease 1.1s; }
+  /* A tap uses its own copy of each animation, so it replays every time. */
+  .plan.tap .piggy .coin { animation: dropAgain .9s cubic-bezier(.5,0,.6,1); }
+  .plan.tap .piggy .pig { animation: oinkAgain .4s ease .8s; }
   @keyframes drop { 0% { opacity: 1; transform: translateY(0); } 80% { opacity: 1; transform: translateY(34px) scale(.8); } 100% { opacity: 0; transform: translateY(40px) scale(.5); } }
+  @keyframes dropAgain { 0% { opacity: 1; transform: translateY(0); } 80% { opacity: 1; transform: translateY(34px) scale(.8); } 100% { opacity: 0; transform: translateY(40px) scale(.5); } }
   @keyframes oink { 50% { transform: scale(1.12, .92); } }
+  @keyframes oinkAgain { 50% { transform: scale(1.12, .92); } }
 
   /* Pro: the "Most Popular" sticker peels and wiggles. */
   .sticker { position: absolute; top: -16px; right: 22px; background: #fdb022; color: #101828; font-weight: 900; font-size: 14px; padding: 7px 14px; border-radius: 10px; transform: rotate(6deg); box-shadow: 0 6px 12px rgba(16,24,40,.15); }
-  .plan.in .sticker, .plan.tap .sticker { animation: peel .8s cubic-bezier(.34,1.56,.64,1); }
+  .plan.in .sticker { animation: peel .8s cubic-bezier(.34,1.56,.64,1); }
+  .plan.tap .sticker { animation: peelAgain .8s cubic-bezier(.34,1.56,.64,1); }
   @keyframes peel { 30% { transform: rotate(-6deg) scale(1.12); } 60% { transform: rotate(10deg); } }
+  @keyframes peelAgain { 30% { transform: rotate(-6deg) scale(1.12); } 60% { transform: rotate(10deg); } }
 
   /* Enterprise: a handshake when tapped. */
   .shake { position: absolute; right: 22px; top: 24px; font-size: 38px; }
