@@ -145,9 +145,6 @@
     100% { transform: translateY(-110vh) translateX(-10px) rotate(-3deg); opacity: 0; }
   }
 
-  .plane { position: absolute; z-index: -1; top: 170px; left: -80px; font-size: 34px; offset-path: path("M0,60 C220,-40 420,160 680,40 S1160,-20 1500,80"); animation: fly 12s ease-in-out 1 forwards; }
-  @supports not (offset-path: path("M0,0")) { .plane { display: none; } }
-  @keyframes fly { 0% { offset-distance: 0%; opacity: 0; } 8% { opacity: 1; } 92% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
 
   /* ---------- App preview ---------- */
   .preview-wrap { position: relative; max-width: 1000px; margin: 64px auto 0; padding: 0 16px; }
@@ -206,7 +203,6 @@
     .p-rail, .p-side { display: none; }
     .note { right: 6px; top: -34px; font-size: 12px; }
     .learning { white-space: normal; }
-    .plane { display: none; }
   }
 
   /* Respect people who prefer less motion */
@@ -214,7 +210,7 @@
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .stars span, .msg, .ch { opacity: 1; transform: none; }
     .squiggle path { stroke-dashoffset: 0; }
-    .bubbles, .plane { display: none; }
+    .bubbles { display: none; }
   }
 </style>
 </head>
@@ -235,7 +231,6 @@
 
   <main class="hero">
     <div class="bubbles" id="bubbles" aria-hidden="true"></div>
-    <div class="plane" aria-hidden="true">✈️</div>
     <div class="doodle twinkle d1" aria-hidden="true">✦</div>
     <div class="doodle twinkle d2" aria-hidden="true">✧</div>
     <div class="doodle twinkle d3" aria-hidden="true">✦</div>
