@@ -219,8 +219,10 @@ details.handled[open] summary { border-bottom: 1px solid var(--divider); }
 .bot.worried .body { animation: jitter .22s linear infinite; }
 @keyframes jitter { 25% { transform: translateX(-.9px) rotate(-1.2deg); } 75% { transform: translateX(.9px) rotate(1.2deg); } }
 .bot.worried .lamp { fill: #ff5a4e; animation: lamp .7s ease-in-out infinite; }
-.bot.worried .sweat { opacity: 1; animation: drip 1.4s ease-in infinite; }
-@keyframes drip { 0% { transform: translateY(0); } 80% { transform: translateY(7px); opacity: 1; } 100% { transform: translateY(9px); opacity: 0; } }
+.bot.worried .sweat { opacity: 1; }
+.bot.worried .sweat path { animation: drip 1.3s ease-in infinite; }
+.bot.worried .sweat .drop2 { animation-delay: .65s; }
+@keyframes drip { 0% { transform: translateY(-2px); opacity: 0; } 15% { opacity: 1; } 75% { transform: translateY(9px); opacity: 1; } 100% { transform: translateY(13px); opacity: 0; } }
 .bot.worried .mouth { opacity: 0; }
 .bot.worried .mouth-o { opacity: 1; }
 .bot.worried .eye { transform: scale(1.15); animation: none; }
@@ -446,6 +448,31 @@ details.handled summary .ic { width: 38px !important; height: 38px !important; b
   .ask { font-size: 16.5px; }
   .clock { margin-left: auto; width: auto; }
 }
+
+/* ---------- Day / night switch: the sun slides over and turns into the moon ---------- */
+.crumb-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.daynight { position: relative; width: 66px; height: 32px; flex-shrink: 0; border-radius: 999px; border: 1px solid rgba(255,255,255,.28); padding: 0; overflow: hidden; cursor: pointer;
+  background: linear-gradient(180deg, #8fc9ff, #4f8ff7); box-shadow: inset 0 2px 6px rgba(0,0,0,.18); transition: background .5s ease; -webkit-tap-highlight-color: transparent; }
+.daynight:focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; }
+.dn-knob { position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff6c9, #ffd23f 55%, #f5a623);
+  box-shadow: 0 0 12px rgba(255,210,63,.9); transition: transform .55s cubic-bezier(.34,1.56,.64,1), background .5s, box-shadow .5s; }
+.dn-knob i { position: absolute; border-radius: 50%; background: #c9cfdd; opacity: 0; transition: opacity .4s .15s; }
+.dn-knob i:nth-child(1) { width: 6px; height: 6px; left: 5px; top: 6px; }
+.dn-knob i:nth-child(2) { width: 4px; height: 4px; left: 13px; top: 13px; }
+.dn-knob i:nth-child(3) { width: 3px; height: 3px; left: 8px; top: 16px; }
+.dn-cloud { position: absolute; right: 7px; top: 12px; width: 18px; height: 8px; border-radius: 8px; background: #fff; opacity: .95; transition: transform .5s, opacity .4s; }
+.dn-cloud::before { content: ""; position: absolute; left: 4px; top: -5px; width: 9px; height: 9px; border-radius: 50%; background: #fff; }
+.dn-stars i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff; opacity: 0; transform: scale(.3); transition: opacity .4s, transform .4s; }
+.dn-stars i:nth-child(1) { left: 9px; top: 7px; } .dn-stars i:nth-child(2) { left: 17px; top: 18px; width: 2px; height: 2px; }
+.dn-stars i:nth-child(3) { left: 26px; top: 9px; width: 2px; height: 2px; } .dn-stars i:nth-child(4) { left: 13px; top: 24px; }
+:root[data-theme="dark"] .daynight { background: linear-gradient(180deg, #0b1733, #1d3f8f); }
+:root[data-theme="dark"] .dn-knob { transform: translateX(34px) rotate(320deg); background: radial-gradient(circle at 35% 35%, #ffffff, #e8ecf5 60%, #c3cadb); box-shadow: 0 0 10px rgba(201,214,239,.7); }
+:root[data-theme="dark"] .dn-knob i { opacity: 1; }
+:root[data-theme="dark"] .dn-cloud { transform: translateY(16px); opacity: 0; }
+:root[data-theme="dark"] .dn-stars i { opacity: 1; transform: scale(1); animation: twinkle 2.4s ease-in-out infinite; }
+:root[data-theme="dark"] .dn-stars i:nth-child(2) { animation-delay: .6s; } :root[data-theme="dark"] .dn-stars i:nth-child(3) { animation-delay: 1.2s; }
+/* The page fades between themes instead of snapping */
+body, .card, .list, .explain, .row, .rule, .say, .why, .b, .pill, .topbar, .tabs { transition: background-color .45s ease, color .45s ease, border-color .45s ease; }
 </style>
 </head>
 <body>
@@ -481,7 +508,13 @@ details.handled summary .ic { width: 38px !important; height: 38px !important; b
         <div class="hero-dots" aria-hidden="true"></div>
         <div class="hero-grid">
           <div>
-      <div class="crumbs">Zedu · Francescameju</div>
+      <div class="crumb-row"><div class="crumbs">Zedu · Francescameju</div>
+        <button class="daynight" type="button" data-theme-toggle aria-label="Switch between light and dark mode">
+          <span class="dn-stars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="dn-cloud" aria-hidden="true"></span>
+          <span class="dn-knob" aria-hidden="true"><i></i><i></i><i></i></span>
+        </button>
+      </div>
       <div class="greet" id="greet">Hello, Francesca</div>
       <h1>Needs you <span class="spark" aria-hidden="true">✨</span></h1>
       <p class="sub">Your agent only stops for you here. Everything else it handles on its own and reports below. Answer in one tap, and teach it a rule so it asks less next time.</p>
@@ -518,7 +551,7 @@ details.handled summary .ic { width: 38px !important; height: 38px !important; b
               <ellipse class="mouth-o" cx="32" cy="38.6" rx="1.7" ry="2" fill="#8fc9ff"/>
               <ellipse class="cheek" cx="18.6" cy="41" rx="2.6" ry="1.5" fill="#ff8fb1"/>
               <ellipse class="cheek" cx="45.4" cy="41" rx="2.6" ry="1.5" fill="#ff8fb1"/>
-              <path class="sweat" d="M54 12q3.5 4.5 0 7q-3.5-2.5 0-7z" fill="#8fc9ff"/>
+              <g class="sweat"><path class="drop1" d="M58 9q4.5 6 0 9.5q-4.5-3.5 0-9.5z" fill="#eaf6ff" stroke="#1f5fd9" stroke-width="1.2"/><path class="drop2" d="M6 15q3.2 4.3 0 6.8q-3.2-2.5 0-6.8z" fill="#eaf6ff" stroke="#1f5fd9" stroke-width="1"/></g>
               <rect x="21" y="52" width="22" height="7" rx="3.5" fill="#2e6fef"/>
             </g>
             <g class="zz" fill="#8fc9ff" font-weight="800" font-family="DM Sans, sans-serif"><text x="49" y="11" font-size="10">z</text><text x="54" y="5" font-size="8">z</text></g>
@@ -615,7 +648,7 @@ details.handled summary .ic { width: 38px !important; height: 38px !important; b
               <ellipse class="mouth-o" cx="32" cy="38.6" rx="1.7" ry="2" fill="#8fc9ff"/>
               <ellipse class="cheek" cx="18.6" cy="41" rx="2.6" ry="1.5" fill="#ff8fb1"/>
               <ellipse class="cheek" cx="45.4" cy="41" rx="2.6" ry="1.5" fill="#ff8fb1"/>
-              <path class="sweat" d="M54 12q3.5 4.5 0 7q-3.5-2.5 0-7z" fill="#8fc9ff"/>
+              <g class="sweat"><path class="drop1" d="M58 9q4.5 6 0 9.5q-4.5-3.5 0-9.5z" fill="#eaf6ff" stroke="#1f5fd9" stroke-width="1.2"/><path class="drop2" d="M6 15q3.2 4.3 0 6.8q-3.2-2.5 0-6.8z" fill="#eaf6ff" stroke="#1f5fd9" stroke-width="1"/></g>
               <rect x="21" y="52" width="22" height="7" rx="3.5" fill="#2e6fef"/>
             </g>
             <g class="zz" fill="#8fc9ff" font-weight="800" font-family="DM Sans, sans-serif"><text x="49" y="11" font-size="10">z</text><text x="54" y="5" font-size="8">z</text></g>
@@ -816,7 +849,7 @@ function mood(fromTick) {
   const waiting = decisions.filter(d => !d.answered);
   const hot = waiting.filter(d => d.secs != null && left(d) > 0 && left(d) < 300).sort((a, b) => left(a) - left(b))[0];
   if (!waiting.length) { setBot("sleep"); speak("All done, thank you! I'll only ping you if I get stuck. 😴"); }
-  else if (hot) { setBot("worried"); speak(`Psst… the offer on #${hot.issue.n} runs out in <b>${left(hot)}s</b>. Take it or pass? 😬`, fromTick ? "quiet" : ""); }
+  else if (hot) { setBot("worried"); speak(`Psst… the offer on #${hot.issue.n} runs out in <b>${left(hot)}s</b>. Take it or pass? 😅`, fromTick ? "quiet" : ""); }
   else { setBot(""); speak(`${waiting.length} thing${waiting.length > 1 ? "s" : ""} need${waiting.length > 1 ? "" : "s"} you. Nothing's on fire, take your time ☕`); }
 }
 function react(s, text, ms) {
@@ -908,11 +941,17 @@ function syncLogo() {
   document.getElementById("mlogo").src = dark ? "ziki-logo-dark.png" : "ziki-logo-light.png";
   return dark;
 }
-syncLogo();
+root.dataset.theme = syncLogo() ? "dark" : "light";
+function syncSwitch() { document.querySelectorAll(".daynight").forEach(b => b.setAttribute("aria-pressed", String(root.dataset.theme === "dark"))); }
+syncSwitch();
 document.querySelectorAll("[data-theme-toggle]").forEach(b => b.addEventListener("click", () => {
   const next = syncLogo() ? "light" : "dark";
-  root.dataset.theme = next; syncLogo();
+  root.dataset.theme = next; syncLogo(); syncSwitch();
   try { localStorage.setItem("zk-theme", next); } catch (e) {}
+  if (typeof react === "function") {
+    trick(next === "dark" ? "wiggle" : "hop", 800);
+    react(state === "sleep" ? "sleep" : "happy", next === "dark" ? "Lights off… cosy 🌙✨" : "Good morning, sunshine! ☀️", 2200);
+  }
 }));
 </script>
 </body>
