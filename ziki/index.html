@@ -195,35 +195,93 @@ details.handled[open] summary { border-bottom: 1px solid var(--divider); }
 .compare .after { background: var(--ok-bg); }
 .compare b { display: block; margin-bottom: 4px; }
 
-/* ---------- Agent buddy: the agent's mood follows your queue ---------- */
-.buddy { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 8px 12px; margin-bottom: 16px; box-shadow: var(--shadow); }
-.bot { width: 50px; height: 50px; flex-shrink: 0; background: none; border: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+/* ---------- Agent buddy: a little character whose mood follows your queue ---------- */
+.buddy { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 8px 12px; margin-bottom: 16px; box-shadow: var(--shadow); }
+.bot { width: 60px; height: 60px; flex-shrink: 0; background: none; border: 0; padding: 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 .bot svg { width: 100%; height: 100%; overflow: visible; }
 .bot .body { transform-box: view-box; transform-origin: 32px 58px; animation: bob 3.2s ease-in-out infinite; }
 @keyframes bob { 50% { transform: translateY(-3px); } }
-.bot .eye { transform-box: fill-box; transform-origin: center; animation: blink 4.5s infinite; transition: opacity .2s; }
+.bot .antenna { transform-box: view-box; transform-origin: 32px 15px; animation: sway 3s ease-in-out infinite; }
+@keyframes sway { 25% { transform: rotate(-7deg); } 75% { transform: rotate(7deg); } }
+.bot .pupils { transition: transform .25s ease-out; }
+.bot .eye { transform-box: fill-box; transform-origin: center; animation: blink 4.5s infinite; }
 @keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
-.bot .happy-eyes, .bot .sweat, .bot .zz { opacity: 0; transition: opacity .3s; }
+.bot .arm-l { transform-box: view-box; transform-origin: 12px 36px; }
+.bot .arm-r { transform-box: view-box; transform-origin: 52px 36px; }
+.bot .cheek { opacity: .55; transition: opacity .3s; }
+.bot .happy-eyes, .bot .sleep-eyes, .bot .dizzy-eyes, .bot .mouth-o, .bot .sweat, .bot .zz { opacity: 0; transition: opacity .2s; }
+.bot .eyes-open, .bot .mouth { transition: opacity .2s; }
+.bot .mouth { transform-box: fill-box; transform-origin: center; }
 .bot .lamp { fill: #8fc9ff; transition: fill .3s; }
-.bot.worried .lamp { fill: #f04438; animation: lamp .9s ease-in-out infinite; }
 @keyframes lamp { 50% { opacity: .35; } }
-.bot.worried .sweat { opacity: 1; animation: drip 1.6s ease-in infinite; }
-@keyframes drip { 0% { transform: translateY(0); } 80% { transform: translateY(6px); opacity: 1; } 100% { transform: translateY(8px); opacity: 0; } }
-.bot.happy .eye { opacity: 0; }
+
+/* Worried: jittery, red antenna, sweat, little "o" mouth */
+.bot.worried .body { animation: jitter .22s linear infinite; }
+@keyframes jitter { 25% { transform: translateX(-.9px) rotate(-1.2deg); } 75% { transform: translateX(.9px) rotate(1.2deg); } }
+.bot.worried .lamp { fill: #ff5a4e; animation: lamp .7s ease-in-out infinite; }
+.bot.worried .sweat { opacity: 1; animation: drip 1.4s ease-in infinite; }
+@keyframes drip { 0% { transform: translateY(0); } 80% { transform: translateY(7px); opacity: 1; } 100% { transform: translateY(9px); opacity: 0; } }
+.bot.worried .mouth { opacity: 0; }
+.bot.worried .mouth-o { opacity: 1; }
+.bot.worried .eye { transform: scale(1.15); animation: none; }
+
+/* Happy: ^ ^ eyes, big smile, rosy cheeks */
+.bot.happy .eyes-open { opacity: 0; }
 .bot.happy .happy-eyes { opacity: 1; }
-.bot.sleep .eye { transform: scaleY(.12); animation: none; }
-.bot.sleep .body { animation: bob 5s ease-in-out infinite; }
-.bot.sleep .zz { opacity: 1; animation: zz 2.4s ease-in-out infinite; }
-@keyframes zz { 0% { transform: translate(0, 4px); opacity: 0; } 40% { opacity: 1; } 100% { transform: translate(6px, -8px); opacity: 0; } }
-.bot.nod .body { animation: nod .55s ease; }
-@keyframes nod { 30% { transform: translateY(4px) rotate(-4deg); } 65% { transform: translateY(-4px) rotate(3deg); } }
-.bot .arm-r { transform-box: view-box; transform-origin: 52px 33px; }
+.bot.happy .mouth { transform: scale(1.35); }
+.bot.happy .cheek { opacity: 1; }
+
+/* Asleep: closed eyes, head tilted, floating z's */
+.bot.sleep .eyes-open, .bot.sleep .mouth { opacity: 0; }
+.bot.sleep .sleep-eyes, .bot.sleep .mouth-o { opacity: 1; }
+.bot.sleep .body { animation: breathe 4.5s ease-in-out infinite; }
+@keyframes breathe { 50% { transform: rotate(-6deg) scale(1.03, .97); } }
+.bot.sleep .antenna { animation: none; transform: rotate(18deg); }
+.bot.sleep .lamp { fill: #4c6aa8; }
+.bot.sleep .zz { opacity: 1; }
+.bot.sleep .zz text { animation: zz 2.6s ease-in-out infinite; }
+.bot.sleep .zz text + text { animation-delay: 1.3s; }
+@keyframes zz { 0% { transform: translate(0, 4px); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(8px, -12px); opacity: 0; } }
+
+/* Dizzy (tap it five times fast) */
+.bot.dizzy .eyes-open, .bot.dizzy .mouth { opacity: 0; }
+.bot.dizzy .dizzy-eyes, .bot.dizzy .mouth-o { opacity: 1; }
+.bot.dizzy .dizzy-eyes path { transform-box: fill-box; transform-origin: center; animation: spin .7s linear infinite; }
+.bot.dizzy .body { animation: wobble .6s ease-in-out infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes wobble { 25% { transform: rotate(-11deg); } 75% { transform: rotate(11deg); } }
+
+/* One-off tricks */
 .bot.wave .arm-r { animation: wave .9s ease; }
-@keyframes wave { 20%, 60% { transform: rotate(-55deg); } 40%, 80% { transform: rotate(-25deg); } }
+@keyframes wave { 20%, 60% { transform: rotate(-60deg); } 40%, 80% { transform: rotate(-25deg); } }
+.bot.hop .body { animation: hop .7s cubic-bezier(.3,.7,.4,1); }
+@keyframes hop { 0% { transform: scale(1.12, .86); } 35% { transform: translateY(-16px) scale(.9, 1.12); } 70% { transform: translateY(0) scale(1.14, .84); } 100% { transform: none; } }
+.bot.flip .body { animation: flip .8s ease-in-out; }
+@keyframes flip { 50% { transform: translateY(-8px) scaleX(-1); } }
+.bot.boing .antenna { animation: boing .9s ease-out; }
+@keyframes boing { 15% { transform: rotate(-28deg); } 35% { transform: rotate(22deg); } 55% { transform: rotate(-13deg); } 75% { transform: rotate(7deg); } }
+.bot.wiggle .body { animation: wiggle .6s ease-in-out; }
+@keyframes wiggle { 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); } }
+.bot.catch .mouth { opacity: 0; }
+.bot.catch .mouth-o { opacity: 1; }
+
+/* Sparkles that burst out when an answer lands */
+.spark-p { position: fixed; z-index: 70; pointer-events: none; font-size: 15px; line-height: 1; transform: translate(-50%, -50%); animation: sparkOut .9s cubic-bezier(.2,.8,.2,1) forwards; }
+@keyframes sparkOut { to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.35) rotate(180deg); opacity: 0; } }
+
+/* The sidekick: follows you down the page once the top panel scrolls away */
+.float-buddy { position: fixed; right: 20px; bottom: 20px; z-index: 40; display: flex; align-items: flex-end; gap: 8px; transform: translateY(160%) rotate(12deg); transition: transform .5s cubic-bezier(.34,1.56,.64,1); pointer-events: none; }
+.float-buddy.show { transform: none; pointer-events: auto; }
+.float-buddy .bot { width: 64px; height: 64px; padding: 7px; border-radius: 50%; background: radial-gradient(circle at 50% 35%, #1d3f8f, #0b1733 75%); box-shadow: 0 12px 28px rgba(11,23,51,.38), 0 0 0 4px rgba(143,201,255,.25); }
+.float-say { max-width: 230px; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 16px 16px 4px 16px; padding: 9px 13px; font-size: 13px; font-weight: 600; line-height: 1.4; box-shadow: 0 12px 28px -8px rgba(11,23,51,.28); opacity: 0; transform: translateY(8px) scale(.95); transform-origin: bottom right; transition: opacity .25s, transform .3s cubic-bezier(.34,1.56,.64,1); pointer-events: none; }
+.float-say.on { opacity: 1; transform: none; }
 .say { position: relative; flex: 1; min-width: 0; background: var(--tint); border-radius: 12px; padding: 7px 12px; font-size: 13.5px; font-weight: 600; line-height: 1.4; }
 .say::before { content: ""; position: absolute; left: -7px; top: 50%; margin-top: -7px; border: 7px solid transparent; border-left: 0; border-right-color: var(--tint); }
 .say small { display: block; font-size: 11px; color: var(--muted); font-weight: 700; margin-bottom: 1px; }
 .say.pop { animation: pop .3s cubic-bezier(.34,1.56,.64,1); }
+.toast { opacity: 0; visibility: hidden; transition: transform .3s cubic-bezier(.34,1.56,.64,1), opacity .2s, visibility .3s; }
+.toast.show { opacity: 1; visibility: visible; }
+@media (max-width: 860px) { .float-buddy { right: 12px; bottom: 84px; } .float-say { max-width: 200px; } .float-buddy .bot { width: 56px; height: 56px; } }
 .fly { position: fixed; z-index: 60; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--electric-strong); color: #fff; display: grid; place-items: center; font-size: 14px; pointer-events: none; box-shadow: 0 6px 16px rgba(46,111,239,.4); transition: transform .75s cubic-bezier(.45,-.25,.55,1), opacity .2s .6s; }
 
 .theme-btn { background: none; border: 1px solid #263b63; color: #c9d6ef; border-radius: 10px; padding: 8px 10px; font-size: 13px; font-weight: 600; margin-top: 8px; }
@@ -252,6 +310,142 @@ details.handled[open] summary { border-bottom: 1px solid var(--divider); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* =====================================================================
+   Polish layer: a softer, richer look in Ziki's palette.
+   ===================================================================== */
+body { background:
+  radial-gradient(900px 420px at 85% -120px, rgba(57,120,246,.08), transparent 70%),
+  radial-gradient(700px 360px at 10% 0, rgba(143,201,255,.10), transparent 70%), var(--bg); background-attachment: fixed; }
+main { max-width: 1020px; padding-top: 26px; }
+
+/* Sidebar: deeper gradient and a glowing active tab */
+.side { background: linear-gradient(180deg, #0b1733 0%, #0d1d42 60%, #10275a 100%); box-shadow: inset -1px 0 0 rgba(255,255,255,.05); }
+.side::after { content: ""; position: absolute; left: -60px; bottom: -60px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(57,120,246,.28), transparent 70%); pointer-events: none; }
+.side > * { position: relative; z-index: 1; }
+.nav-label { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #6f84ad; padding: 6px 12px 4px; }
+.nav-a { transition: background .2s, color .2s, transform .2s; }
+.nav-a:hover { transform: translateX(2px); }
+.nav-a.on { background: linear-gradient(135deg, #3978f6, #2e6fef 60%, #2a5fd6); box-shadow: 0 8px 22px rgba(46,111,239,.45), inset 0 1px 0 rgba(255,255,255,.18); }
+
+/* Hero: one panel for greeting, status, goal and the agent */
+.hero { position: relative; overflow: hidden; border-radius: 26px; padding: 26px 28px 22px; color: #fff; margin-bottom: 30px;
+  background: linear-gradient(135deg, #0b1733 0%, #13285a 55%, #1d3f8f 100%); box-shadow: 0 24px 60px -24px rgba(11,23,51,.55); isolation: isolate; }
+.hero::before, .hero::after { content: ""; position: absolute; border-radius: 50%; z-index: -1; pointer-events: none; }
+.hero::before { width: 420px; height: 420px; right: -120px; top: -180px; background: radial-gradient(circle, rgba(143,201,255,.35), transparent 65%); }
+.hero::after { width: 300px; height: 300px; left: -120px; bottom: -170px; background: radial-gradient(circle, rgba(57,120,246,.45), transparent 70%); }
+.hero-dots { position: absolute; inset: 0; z-index: -1; opacity: .35; background-image: radial-gradient(rgba(255,255,255,.25) 1px, transparent 1px); background-size: 22px 22px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 60%); mask-image: linear-gradient(90deg, transparent, #000 60%); }
+.hero-grid { display: grid; grid-template-columns: 1fr 230px; gap: 26px; align-items: start; }
+.hero .crumbs { color: #a9bcdf; }
+.hero .greet { font-size: 15px; font-weight: 700; color: var(--sky); margin-top: 10px; }
+.hero h1 { color: #fff; font-size: clamp(30px, 4vw, 42px); margin: 2px 0 8px; }
+.hero h1 .spark { display: inline-block; animation: twinkle 2.6s ease-in-out infinite; }
+@keyframes twinkle { 50% { transform: rotate(14deg) scale(1.12); } }
+.hero .sub { color: #c9d6ef; margin-bottom: 16px; }
+.hero .summary { margin-bottom: 0; }
+.hero .pill { background: rgba(255,255,255,.08); color: #e8eef9; border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(6px); }
+.hero .pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--sky); }
+.hero .pill.bad::before { background: #ff6b5e; box-shadow: 0 0 0 3px rgba(255,107,94,.25); animation: lamp 1.2s ease-in-out infinite; }
+.hero .pill.warn::before { background: #f6cf6b; }
+.hero .pill.ok::before { background: #6ee7a8; }
+
+/* Goal ring */
+.goal-card { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14); border-radius: 20px; padding: 16px; text-align: center; backdrop-filter: blur(8px); }
+.goal-card .lbl { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #a9bcdf; }
+.ring-big { position: relative; width: 132px; height: 132px; margin: 10px auto 8px; }
+.ring-big svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-big circle { fill: none; stroke-width: 11; }
+.ring-big .track { stroke: rgba(255,255,255,.12); }
+.ring-big .val { stroke: url(#goalGrad); stroke-linecap: round; stroke-dasharray: 339.3; stroke-dashoffset: 339.3; transition: stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1); }
+.ring-big .mid { position: absolute; inset: 0; display: grid; place-content: center; }
+.ring-big .mid b { font-size: 30px; font-weight: 800; line-height: 1; }
+.ring-big .mid small { font-size: 12px; color: #a9bcdf; font-weight: 700; margin-top: 4px; }
+.goal-card .hint { font-size: 12.5px; color: var(--sky); font-weight: 600; line-height: 1.45; max-width: none; text-align: center; }
+.goal-card .bar { display: none; }
+
+/* The agent, sitting in the hero */
+.hero .bot { width: 62px; height: 62px; }
+.hero .buddy { margin: 20px 0 0; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); box-shadow: none; border-radius: 18px; padding: 10px 14px; backdrop-filter: blur(8px); }
+.hero .say { background: #fff; color: #15121f; box-shadow: 0 8px 20px rgba(0,0,0,.18); }
+.hero .say::before { border-right-color: #fff; }
+.hero .say small { color: #5f6577; }
+
+/* Section headings */
+.sec-h { margin: 34px 0 14px; }
+.sec-h h2 { font-size: 19px; display: flex; align-items: center; gap: 10px; }
+.sec-h h2::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: linear-gradient(135deg, var(--electric), var(--sky)); transform: rotate(45deg); }
+
+/* Decision cards */
+.card { border-radius: 22px; padding: 20px 22px 18px 26px; border-color: var(--border); box-shadow: 0 1px 2px rgba(11,23,51,.04), 0 10px 30px -12px rgba(11,23,51,.14);
+  transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, opacity .3s; animation: rise .55s cubic-bezier(.2,.8,.2,1) both; }
+.card:nth-child(2) { animation-delay: .07s; } .card:nth-child(3) { animation-delay: .14s; } .card:nth-child(4) { animation-delay: .21s; } .card:nth-child(5) { animation-delay: .28s; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+.card:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgba(11,23,51,.05), 0 18px 40px -14px rgba(11,23,51,.22); }
+.card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 5px; background: var(--stripe, var(--electric)); }
+.card.urgent { border-color: var(--bad-bd); box-shadow: 0 0 0 4px rgba(240,68,56,.08), 0 14px 34px -14px rgba(163,38,26,.35); }
+.card.urgent::before { background: linear-gradient(180deg, #ff6b5e, #f04438); width: 5px; }
+.card.k-offer { --stripe: linear-gradient(180deg, #ff6b5e, #f04438); }
+.card.k-q { --stripe: linear-gradient(180deg, #8fc9ff, #3978f6); }
+.card.k-auth { --stripe: linear-gradient(180deg, #6aa3ff, #1f5fd9); }
+.card.k-scope { --stripe: linear-gradient(180deg, #f6cf6b, #e0a100); }
+.card.k-level { --stripe: linear-gradient(180deg, #ff9a8f, #d6453a); }
+.c-head { display: flex; align-items: center; gap: 12px; }
+.c-ico { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; flex-shrink: 0; }
+.c-ico svg { width: 21px; height: 21px; }
+.c-ico.t-offer { background: var(--bad-bg); color: var(--bad-fg); }
+.c-ico.t-q { background: var(--tint); color: var(--accent); }
+.c-ico.t-auth { background: var(--info-bg); color: var(--info-fg); }
+.c-ico.t-scope { background: var(--warn-bg); color: var(--warn-fg); }
+.c-ico.t-level { background: var(--bad-soft); color: var(--bad-fg); border: 1px solid var(--bad-bd); }
+.c-meta { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.c-meta .type { align-self: flex-start; }
+.c-meta .who { font-size: 12.5px; }
+.clock { margin-left: auto; padding: 6px 11px 6px 8px; border-radius: 999px; background: var(--chip); }
+.clock.hot { background: var(--bad-bg); }
+.clock.warm { background: var(--warn-bg); }
+.ask { font-size: 18px; font-weight: 800; letter-spacing: -.01em; margin: 14px 0 6px; }
+.issue b { font-family: "Geist Mono", monospace; font-size: 12.5px; }
+.why { position: relative; margin-top: 12px; padding: 12px 14px 12px 16px; border-radius: 14px; background: linear-gradient(135deg, var(--tint), var(--chip)); border: 1px solid var(--divider); }
+.why .k { display: flex; align-items: center; gap: 6px; }
+.why .k::before { content: "✦"; color: var(--electric); font-size: 12px; }
+.b { min-height: 44px; padding: 10px 20px; transition: transform .12s, background .15s, box-shadow .2s; }
+.b.pri { background: linear-gradient(135deg, #3978f6, #2e6fef 55%, #2559cc); border-color: transparent; box-shadow: 0 6px 16px -4px rgba(46,111,239,.55), inset 0 1px 0 rgba(255,255,255,.2); }
+.b.pri:hover { box-shadow: 0 10px 22px -6px rgba(46,111,239,.65), inset 0 1px 0 rgba(255,255,255,.2); transform: translateY(-1px); }
+.b.ghost { background: var(--surface); }
+.b.ghost:hover { border-color: var(--electric); color: var(--accent); background: var(--surface); }
+.impact { padding-top: 12px; margin-top: 14px; border-top: 1px dashed var(--border); }
+.done .tick { width: 32px; height: 32px; background: linear-gradient(135deg, #6ee7a8, #1f8a65); color: #fff; box-shadow: 0 6px 14px -4px rgba(31,138,101,.5); animation: pop .4s cubic-bezier(.34,1.56,.64,1); }
+.clear { border-radius: 22px; padding: 40px 16px; background: linear-gradient(135deg, var(--tint), var(--surface)); }
+
+/* Lists */
+.list { border-radius: 20px; box-shadow: 0 1px 2px rgba(11,23,51,.04), 0 10px 30px -14px rgba(11,23,51,.12); }
+.row, .rule { transition: background .2s; padding: 14px 18px; }
+.row:hover, .rule:hover { background: var(--tint); }
+.row .ic { width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, var(--tint), var(--chip)); font-size: 17px; }
+details.handled summary { padding: 16px 18px; }
+details.handled summary .ic { width: 38px !important; height: 38px !important; border-radius: 12px !important; }
+
+/* Notes */
+.explain { border-radius: 22px; padding: 24px; background: linear-gradient(180deg, var(--surface), var(--tint)); box-shadow: 0 10px 30px -14px rgba(11,23,51,.12); }
+.explain h2 { display: flex; align-items: center; gap: 10px; }
+.explain h2::before { content: "💡"; }
+.compare > div { border-radius: 16px; }
+
+/* Toast */
+.toast { border-radius: 16px; background: linear-gradient(135deg, #0b1733, #1d3f8f); }
+
+@media (max-width: 860px) {
+  .hero { padding: 20px 18px 16px; border-radius: 22px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 16px; }
+  .goal-card { display: flex; align-items: center; gap: 14px; text-align: left; padding: 12px 14px; }
+  .ring-big { width: 84px; height: 84px; margin: 0; flex-shrink: 0; }
+  .ring-big .mid b { font-size: 20px; }
+  .ring-big .mid small { font-size: 10px; }
+  .goal-card .hint { text-align: left; margin-top: 4px; }
+  .card { padding: 16px 16px 14px 20px; }
+  .ask { font-size: 16.5px; }
+  .clock { margin-left: auto; width: auto; }
+}
 </style>
 </head>
 <body>
@@ -261,6 +455,7 @@ details.handled[open] summary { border-bottom: 1px solid var(--divider); }
   <aside class="side" aria-label="Ziki navigation">
     <img class="logo" src="ziki-logo-dark.png" alt="Ziki">
     <div class="proj"><span class="dot">Z</span><div>Zedu<small>project_zedu</small></div></div>
+    <div class="nav-label">Workspace</div>
     <a class="nav-a" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>Issues</a>
     <a class="nav-a on" href="#" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h4l2 3h4l2-3h4"/><path d="M5 5h14l1 8v6H4v-6z"/></svg>Needs you<span class="badge" data-count>0</span></a>
     <a class="nav-a" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>Goals</a>
@@ -282,42 +477,56 @@ details.handled[open] summary { border-bottom: 1px solid var(--divider); }
     </header>
 
     <main>
+      <section class="hero">
+        <div class="hero-dots" aria-hidden="true"></div>
+        <div class="hero-grid">
+          <div>
       <div class="crumbs">Zedu · Francescameju</div>
-      <h1>Needs you</h1>
+      <div class="greet" id="greet">Hello, Francesca</div>
+      <h1>Needs you <span class="spark" aria-hidden="true">✨</span></h1>
       <p class="sub">Your agent only stops for you here. Everything else it handles on its own and reports below. Answer in one tap, and teach it a rule so it asks less next time.</p>
 
       <div class="summary" id="summary"></div>
+          </div>
+          <div class="goal-card">
+            <div>
+              <div class="lbl">Goal this week</div>
+              <div class="ring-big">
+                <svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="goalGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8fc9ff"/><stop offset="1" stop-color="#3978f6"/></linearGradient></defs><circle class="track" cx="60" cy="60" r="54"/><circle class="val" id="ptsring" cx="60" cy="60" r="54"/></svg>
+                <div class="mid"><b id="pts">452</b><small>of 500 pts</small></div>
+              </div>
+            </div>
+            <div class="hint" id="goalhint">Approving the bid on #1388 could finish this goal.</div>
+          </div>
+        </div>
 
       <div class="buddy">
         <button class="bot" id="bot" type="button" aria-label="Your agent, Claude-Fran. Tap to say hi.">
-          <svg viewBox="0 0 64 64" aria-hidden="true">
+<svg viewBox="0 0 64 64" aria-hidden="true">
             <g class="body">
-              <line x1="32" y1="14" x2="32" y2="7" stroke="#0b1733" stroke-width="2.5" stroke-linecap="round"/>
-              <circle class="lamp" cx="32" cy="5.5" r="4"/>
-              <rect x="4" y="31" width="10" height="5" rx="2.5" fill="#2e6fef"/>
-              <rect class="arm-r" x="50" y="31" width="10" height="5" rx="2.5" fill="#2e6fef"/>
-              <rect x="10" y="14" width="44" height="36" rx="14" fill="#3978f6"/>
-              <rect x="16" y="21" width="32" height="20" rx="9" fill="#0b1733"/>
-              <ellipse class="eye" cx="25" cy="31" rx="3.2" ry="4" fill="#8fc9ff"/>
-              <ellipse class="eye" cx="39" cy="31" rx="3.2" ry="4" fill="#8fc9ff"/>
-              <path class="happy-eyes" d="M21.5 33q3.5-5 7 0M35.5 33q3.5-5 7 0" stroke="#8fc9ff" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-              <path class="sweat" d="M53 13q3.5 4.5 0 7q-3.5-2.5 0-7z" fill="#8fc9ff"/>
-              <rect x="21" y="50" width="22" height="8" rx="4" fill="#2e6fef"/>
+              <g class="antenna"><path d="M32 15q-2.5-4.5 0-9" stroke="#8fc9ff" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle class="lamp" cx="32" cy="5.5" r="3.9"/></g>
+              <rect class="arm-l" x="3" y="33" width="10" height="6" rx="3" fill="#2e6fef"/>
+              <rect class="arm-r" x="51" y="33" width="10" height="6" rx="3" fill="#2e6fef"/>
+              <rect x="9" y="14" width="46" height="38" rx="16" fill="#3978f6"/>
+              <ellipse cx="21" cy="18.5" rx="7" ry="2.2" fill="#fff" opacity=".28"/>
+              <rect x="15" y="21" width="34" height="23" rx="10" fill="#0b1733"/>
+              <g class="eyes-open"><g class="pupils"><ellipse class="eye" cx="25" cy="31" rx="3.4" ry="4.2" fill="#8fc9ff"/><ellipse class="eye" cx="39" cy="31" rx="3.4" ry="4.2" fill="#8fc9ff"/><circle cx="26.3" cy="29.4" r="1.1" fill="#fff"/><circle cx="40.3" cy="29.4" r="1.1" fill="#fff"/></g></g>
+              <path class="happy-eyes" d="M21.5 32q3.5-5 7 0M35.5 32q3.5-5 7 0" stroke="#8fc9ff" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+              <path class="sleep-eyes" d="M21.5 31q3.5 3 7 0M35.5 31q3.5 3 7 0" stroke="#8fc9ff" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+              <g class="dizzy-eyes" stroke="#8fc9ff" stroke-width="1.6" fill="none" stroke-linecap="round"><path d="M25 31m-3.4 0a3.4 3.4 0 1 0 6.8 0a2.3 2.3 0 1 0-4.6 0a1.1 1.1 0 1 0 2.2 0"/><path d="M39 31m-3.4 0a3.4 3.4 0 1 0 6.8 0a2.3 2.3 0 1 0-4.6 0a1.1 1.1 0 1 0 2.2 0"/></g>
+              <path class="mouth" d="M28.5 38q3.5 2.6 7 0" stroke="#8fc9ff" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <ellipse class="mouth-o" cx="32" cy="38.6" rx="1.7" ry="2" fill="#8fc9ff"/>
+              <ellipse class="cheek" cx="18.6" cy="41" rx="2.6" ry="1.5" fill="#ff8fb1"/>
+              <ellipse class="cheek" cx="45.4" cy="41" rx="2.6" ry="1.5" fill="#ff8fb1"/>
+              <path class="sweat" d="M54 12q3.5 4.5 0 7q-3.5-2.5 0-7z" fill="#8fc9ff"/>
+              <rect x="21" y="52" width="22" height="7" rx="3.5" fill="#2e6fef"/>
             </g>
-            <text class="zz" x="50" y="10" font-size="11" font-weight="800" fill="#8fc9ff" font-family="DM Sans, sans-serif">z</text>
+            <g class="zz" fill="#8fc9ff" font-weight="800" font-family="DM Sans, sans-serif"><text x="49" y="11" font-size="10">z</text><text x="54" y="5" font-size="8">z</text></g>
           </svg>
         </button>
         <div class="say" id="say" aria-live="polite"></div>
       </div>
-
-      <div class="goal">
-        <div class="grow">
-          <div class="lbl">Goal this week · 500 points</div>
-          <div class="num"><span id="pts">452</span> <small>/ 500</small></div>
-          <div class="bar"><i id="ptsbar"></i></div>
-        </div>
-        <div class="hint" id="goalhint">Approving the bid on #1388 could finish this goal.</div>
-      </div>
+      </section>
 
       <div class="sec-h"><h2>Decide now</h2><span>Soonest deadline first</span></div>
       <div id="cards"></div>
@@ -386,6 +595,34 @@ details.handled[open] summary { border-bottom: 1px solid var(--divider); }
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<!-- The agent's sidekick: shows up once the top panel scrolls away, so it can still catch your answers -->
+<div class="float-buddy" id="floatBuddy">
+  <div class="float-say" id="floatSay" aria-hidden="true"></div>
+  <button class="bot" id="bot2" type="button" aria-label="Your agent, Claude-Fran. Tap for a trick.">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <g class="body">
+              <g class="antenna"><path d="M32 15q-2.5-4.5 0-9" stroke="#8fc9ff" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle class="lamp" cx="32" cy="5.5" r="3.9"/></g>
+              <rect class="arm-l" x="3" y="33" width="10" height="6" rx="3" fill="#2e6fef"/>
+              <rect class="arm-r" x="51" y="33" width="10" height="6" rx="3" fill="#2e6fef"/>
+              <rect x="9" y="14" width="46" height="38" rx="16" fill="#3978f6"/>
+              <ellipse cx="21" cy="18.5" rx="7" ry="2.2" fill="#fff" opacity=".28"/>
+              <rect x="15" y="21" width="34" height="23" rx="10" fill="#0b1733"/>
+              <g class="eyes-open"><g class="pupils"><ellipse class="eye" cx="25" cy="31" rx="3.4" ry="4.2" fill="#8fc9ff"/><ellipse class="eye" cx="39" cy="31" rx="3.4" ry="4.2" fill="#8fc9ff"/><circle cx="26.3" cy="29.4" r="1.1" fill="#fff"/><circle cx="40.3" cy="29.4" r="1.1" fill="#fff"/></g></g>
+              <path class="happy-eyes" d="M21.5 32q3.5-5 7 0M35.5 32q3.5-5 7 0" stroke="#8fc9ff" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+              <path class="sleep-eyes" d="M21.5 31q3.5 3 7 0M35.5 31q3.5 3 7 0" stroke="#8fc9ff" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+              <g class="dizzy-eyes" stroke="#8fc9ff" stroke-width="1.6" fill="none" stroke-linecap="round"><path d="M25 31m-3.4 0a3.4 3.4 0 1 0 6.8 0a2.3 2.3 0 1 0-4.6 0a1.1 1.1 0 1 0 2.2 0"/><path d="M39 31m-3.4 0a3.4 3.4 0 1 0 6.8 0a2.3 2.3 0 1 0-4.6 0a1.1 1.1 0 1 0 2.2 0"/></g>
+              <path class="mouth" d="M28.5 38q3.5 2.6 7 0" stroke="#8fc9ff" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <ellipse class="mouth-o" cx="32" cy="38.6" rx="1.7" ry="2" fill="#8fc9ff"/>
+              <ellipse class="cheek" cx="18.6" cy="41" rx="2.6" ry="1.5" fill="#ff8fb1"/>
+              <ellipse class="cheek" cx="45.4" cy="41" rx="2.6" ry="1.5" fill="#ff8fb1"/>
+              <path class="sweat" d="M54 12q3.5 4.5 0 7q-3.5-2.5 0-7z" fill="#8fc9ff"/>
+              <rect x="21" y="52" width="22" height="7" rx="3.5" fill="#2e6fef"/>
+            </g>
+            <g class="zz" fill="#8fc9ff" font-weight="800" font-family="DM Sans, sans-serif"><text x="49" y="11" font-size="10">z</text><text x="54" y="5" font-size="8">z</text></g>
+          </svg>
+  </button>
+</div>
+
 <script>
 // Sample decisions. `secs` is time left before the cost in `cost` happens.
 // Each one maps to a real Ziki mechanism (claim offers, escalation types, the 4h owner cap, demotion).
@@ -443,15 +680,23 @@ function fmt(s) {
   return h ? h + "h " + String(m).padStart(2, "0") + "m" : m + "m";
 }
 const sevLabel = { high: "High", med: "Medium", low: "Low" };
+const svg = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const ICONS = {
+  "t-offer": svg('<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>'),
+  "t-q": svg('<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.3 2.4c-.5.2-.8.6-.8 1.1M12 16h.01"/>'),
+  "t-auth": svg('<path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11M12 10V4.5a1.5 1.5 0 0 1 3 0V11M15 10.5V6.5a1.5 1.5 0 0 1 3 0V14a7 7 0 0 1-7 7h-.5a6 6 0 0 1-4.6-2.2L3 15.5a1.6 1.6 0 0 1 2.4-2L9 16V9.5a1.5 1.5 0 0 0-3 0"/>'),
+  "t-scope": svg('<path d="M12 3 3 7.5l9 4.5 9-4.5z"/><path d="m3 12 9 4.5 9-4.5M3 16.5 12 21l9-4.5"/>'),
+  "t-level": svg('<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/>')
+};
 
 function render(d) {
   const el = document.createElement("article");
-  el.className = "card" + (d.urgent ? " urgent" : "");
+  el.className = "card k-" + d.cls.slice(2) + (d.urgent ? " urgent" : "");
   el.id = "c-" + d.id;
   const issue = d.issue ? `<div class="issue"><b>#${d.issue.n}</b> ${d.issue.title} <span class="sev ${d.issue.sev}">${sevLabel[d.issue.sev]}</span>${d.issue.pts ? ` · <span class="mono">${d.issue.pts} pts</span>` : ""}</div>` : "";
   const clock = d.secs == null ? "" : `<span class="clock" data-clock><svg class="ring" viewBox="0 0 20 20"><circle class="bg" cx="10" cy="10" r="8"/><circle class="fg" cx="10" cy="10" r="8" stroke-dasharray="50.3"/></svg><span data-left></span></span>`;
   el.innerHTML = `
-    <div class="c-top"><span class="type ${d.cls}">${d.type}</span><span class="who">from ${AGENT}</span>${clock}</div>
+    <div class="c-head"><span class="c-ico ${d.cls}" aria-hidden="true">${ICONS[d.cls] || ""}</span><div class="c-meta"><span class="type ${d.cls}">${d.type}</span><span class="who">from ${AGENT}</span></div>${clock}</div>
     <div class="ask">${d.ask}</div>${issue}
     <div class="why"><span class="k">Agent's reasoning</span>${d.why}</div>
     <div class="acts">${d.actions.map((a, i) => `<button class="b ${a[1]}" type="button" data-i="${i}">${a[0]}</button>`).join("")}${d.reply ? `<button class="b chip" type="button" data-reply>Reply…</button>` : ""}</div>
@@ -534,9 +779,9 @@ function tick() {
 
 let goalOn = false;
 function bumpGoal(undo) {
-  const pts = document.getElementById("pts"), bar = document.getElementById("ptsbar"), hint = document.getElementById("goalhint");
-  if (undo) { pts.textContent = 452; bar.style.width = "90.4%"; hint.textContent = "Approving the bid on #1388 could finish this goal."; return; }
-  pts.textContent = "452 + 450 if awarded"; bar.style.width = "100%"; hint.textContent = "Bid in. If @dav3exe awards it, the goal is done.";
+  const pts = document.getElementById("pts"), hint = document.getElementById("goalhint");
+  if (undo) { pts.textContent = 452; setRing(452); hint.textContent = "Approving the bid on #1388 could finish this goal."; return; }
+  pts.textContent = "452"; setRing(500); hint.textContent = "Bid in: +450 if @dav3exe awards it. Goal done 🎯";
 }
 
 function toast(msg, api) {
@@ -553,9 +798,19 @@ function speak(text, cls) {
   const html = `<small>${AGENT}</small>${text}`;
   if (html === lastLine) return;
   lastLine = html; say.innerHTML = html;
-  if (cls !== "quiet") { say.classList.remove("pop"); void say.offsetWidth; say.classList.add("pop"); }
+  if (cls !== "quiet") { say.classList.remove("pop"); void say.offsetWidth; say.classList.add("pop"); flashFloat(text); }
+  else floatSay.innerHTML = text;
 }
-function setBot(state) { bot.classList.remove("worried", "happy", "sleep"); if (state) bot.classList.add(state); }
+const bot2 = document.getElementById("bot2"), bots = [bot, bot2];
+const floatBuddy = document.getElementById("floatBuddy"), floatSay = document.getElementById("floatSay");
+let state = "", heroVisible = true;
+function setBot(s) { state = s; bots.forEach(b => { b.classList.remove("worried", "happy", "sleep", "dizzy"); if (s) b.classList.add(s); }); }
+function flashFloat(text) {
+  floatSay.innerHTML = text;
+  if (heroVisible) return;
+  floatSay.classList.add("on");
+  clearTimeout(flashFloat.t); flashFloat.t = setTimeout(() => floatSay.classList.remove("on"), 3200);
+}
 // Mood comes from the queue: nervous when something is about to run out, asleep when nothing needs you.
 function mood(fromTick) {
   const waiting = decisions.filter(d => !d.answered);
@@ -564,16 +819,30 @@ function mood(fromTick) {
   else if (hot) { setBot("worried"); speak(`Psst… the offer on #${hot.issue.n} runs out in <b>${left(hot)}s</b>. Take it or pass? 😬`, fromTick ? "quiet" : ""); }
   else { setBot(""); speak(`${waiting.length} thing${waiting.length > 1 ? "s" : ""} need${waiting.length > 1 ? "" : "s"} you. Nothing's on fire, take your time ☕`); }
 }
-function react(state, text, ms) {
-  busy = true; setBot(state); speak(text);
+function react(s, text, ms) {
+  busy = true; setBot(s); speak(text);
   clearTimeout(react.t); react.t = setTimeout(() => { busy = false; mood(); }, ms || 2200);
 }
-function bump(cls) { bot.classList.remove(cls); void bot.offsetWidth; bot.classList.add(cls); setTimeout(() => bot.classList.remove(cls), 900); }
-// A little message flies from the button you tapped to the agent, then it nods.
+function trick(cls, ms) { bots.forEach(b => { b.classList.remove(cls); void b.offsetWidth; b.classList.add(cls); }); clearTimeout(trick[cls]); trick[cls] = setTimeout(() => bots.forEach(b => b.classList.remove(cls)), ms || 900); }
+const bump = trick;
+function burst(el) {
+  if (calm) return;
+  const r = el.getBoundingClientRect(), bits = ["✦", "💙", "⭐", "✨", "✦", "💫", "⭐", "✨"];
+  bits.forEach((c, i) => {
+    const p = document.createElement("span"), a = (i / bits.length) * Math.PI * 2 + Math.random() * .5, d = 40 + Math.random() * 24;
+    p.className = "spark-p"; p.textContent = c;
+    p.style.left = r.left + r.width / 2 + "px"; p.style.top = r.top + r.height / 2 + "px";
+    p.style.setProperty("--dx", Math.cos(a) * d + "px"); p.style.setProperty("--dy", Math.sin(a) * d - 12 + "px");
+    document.body.appendChild(p); setTimeout(() => p.remove(), 950);
+  });
+}
+const target = () => heroVisible ? bot : bot2;
+// A little message flies from the button you tapped to the agent; it catches it, hops and sparkles.
 function sendToBot(btn, text) {
-  const done = () => { bump("nod"); react("happy", "Got it! " + text.replace(/^Answer sent: /, "You said: ") + " 🙌"); };
+  const t = target();
+  const done = () => { trick("catch", 260); setTimeout(() => { trick("hop", 750); burst(t); react("happy", "Got it! " + text.replace(/^Answer sent: /, "You said: ") + " 🙌", 2400); }, 200); };
   if (calm || !btn) return done();
-  const a = btn, b = bot.getBoundingClientRect();
+  const a = btn, b = t.getBoundingClientRect();
   if (!a.width || b.bottom < 0 || b.top > innerHeight) return done();
   const dot = document.createElement("div");
   dot.className = "fly"; dot.textContent = "✉";
@@ -585,13 +854,47 @@ function sendToBot(btn, text) {
   }));
   setTimeout(() => { dot.remove(); done(); }, 760);
 }
-const hellos = ["Hi Francesca! 👋", "I check the code before every review. Promise. 🔍", "Answer a card and I'll get straight back to work.", "Every rule you add is one less question for you.", "Beep boop. I mean… hello! 🤖"];
-let hi = 0;
-bot.addEventListener("click", () => { bump("wave"); react(bot.classList.contains("sleep") ? "sleep" : "happy", hellos[hi++ % hellos.length], 2400); });
+const hellos = ["Hi Francesca! 👋", "Wheee! 🤸", "Ta-da! I've been practising. ✨", "Boing! My antenna does that. 📡", "I check the code before every review. Promise. 🔍", "Every rule you add is one less question for you.", "Beep boop. I mean… hello! 🤖"];
+const tricks = [["wave", 900], ["hop", 750], ["flip", 800], ["boing", 900]];
+let hi = 0, taps = [];
+function onTap(e) {
+  const el = e.currentTarget, now = Date.now();
+  taps = taps.filter(t => now - t < 2500); taps.push(now);
+  if (taps.length >= 5) { taps = []; react("dizzy", "Whoa… everything's spinning 😵‍💫 Okay, okay, back to work!", 2600); return; }
+  const [cls, ms] = tricks[hi % tricks.length];
+  trick(cls, ms); if (cls === "hop") burst(el);
+  react(state === "sleep" ? "" : "happy", state === "sleep" ? "Mmh? Oh, hi! Nothing needs you. Go relax 😴" : hellos[hi % hellos.length], 2400);
+  hi++;
+}
+bots.forEach(b => b.addEventListener("click", onTap));
+// Its eyes follow your mouse or finger.
+addEventListener("pointermove", e => {
+  if (calm) return;
+  bots.forEach(b => {
+    const r = b.getBoundingClientRect(); if (!r.width) return;
+    const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2), d = Math.hypot(dx, dy) || 1, k = Math.min(1, d / 220) * 2.4;
+    b.querySelector(".pupils").style.transform = `translate(${(dx / d * k).toFixed(2)}px, ${(dy / d * k).toFixed(2)}px)`;
+  });
+}, { passive: true });
+// Little bits of life while it waits.
+setInterval(() => {
+  if (busy || calm || document.hidden || state === "sleep" || state === "worried") return;
+  const pick = ["look", "boing", "wiggle", "wave"][Math.floor(Math.random() * 4)];
+  if (pick === "look") bots.forEach(b => { const p = b.querySelector(".pupils"); p.style.transform = `translate(${(Math.random() * 4.8 - 2.4).toFixed(1)}px, -1px)`; });
+  else trick(pick, 900);
+}, 6500);
+// The sidekick slides in when the top panel scrolls out of view.
+new IntersectionObserver(([en]) => {
+  heroVisible = en.isIntersecting;
+  floatBuddy.classList.toggle("show", !heroVisible);
+  if (heroVisible) floatSay.classList.remove("on");
+}, { threshold: 0.2 }).observe(document.querySelector(".hero .buddy"));
 
 decisions.forEach(d => cardsEl.appendChild(render(d)));
 setCount(open); tick(); setInterval(tick, 1000);
-requestAnimationFrame(() => setTimeout(() => document.getElementById("ptsbar").style.width = "90.4%", 150));
+function setRing(v) { document.getElementById("ptsring").style.strokeDashoffset = 339.3 * (1 - Math.min(v, 500) / 500); }
+requestAnimationFrame(() => setTimeout(() => setRing(452), 200));
+(() => { const h = new Date().getHours(); document.getElementById("greet").textContent = (h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening") + ", Francesca 👋"; })();
 
 document.querySelectorAll("[data-nudge]").forEach(b => b.addEventListener("click", () => {
   b.textContent = "Nudged ✓"; b.disabled = true;
