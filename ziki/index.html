@@ -557,6 +557,40 @@ details.handled summary { font-size: 13.5px; font-weight: 600; }
 .toast { background: linear-gradient(135deg, #16181d, #22252c); }
 .daynight { border-color: rgba(255,255,255,.18); }
 :root[data-theme="dark"] .daynight { background: linear-gradient(180deg, #0e0f12, #2a2d35); }
+
+/* ---------- One palette: charcoal, greys and Ziki blue; red only for what is truly urgent ---------- */
+.card::before, .card.k-offer::before, .card.k-q::before, .card.k-auth::before, .card.k-scope::before, .card.k-level::before { background: var(--border); width: 3px; }
+.card.urgent::before { background: #e5484d; width: 3px; }
+.card.urgent { border-color: var(--border); box-shadow: 0 0 0 1px rgba(229,72,77,.25), 0 10px 30px -14px rgba(11,23,51,.18); }
+.c-ico, .c-ico.t-offer, .c-ico.t-q, .c-ico.t-auth, .c-ico.t-scope, .c-ico.t-level { background: var(--chip); color: var(--muted); border: 0; }
+.card.urgent .c-ico { color: #e5484d; }
+.type, .t-offer, .t-q, .t-auth, .t-scope, .t-level { background: transparent; color: var(--muted); border: 0; padding: 0; letter-spacing: .08em; }
+.sev, .sev.high, .sev.med, .sev.low { background: var(--chip); color: var(--muted); font-weight: 600; }
+.clock, .clock.warm { background: var(--chip); color: var(--muted); }
+.clock.hot { background: var(--chip); color: #e5484d; }
+.why { background: var(--chip); border-color: transparent; }
+.why .k::before { color: var(--accent); }
+.b.pri { background: var(--electric-strong); box-shadow: none; }
+.b.pri:hover { background: var(--accent); box-shadow: none; }
+:root[data-theme="dark"] .b.pri:hover { background: #4b86f8; }
+.b.chip { background: var(--chip); color: var(--text); }
+.sec-h h2::before { background: var(--electric); border-radius: 2px; transform: none; width: 4px; height: 14px; }
+.hero .pill::before { background: #8b93a5; }
+.hero .pill.bad::before { background: #e5484d; box-shadow: none; }
+.hero .pill.warn::before, .hero .pill.ok::before { background: #8b93a5; }
+.row .ic { background: var(--chip); filter: grayscale(1); opacity: .75; }
+.row .pts { color: var(--text); font-weight: 600; }
+details.handled summary .ic { background: var(--chip) !important; filter: grayscale(1); }
+details.handled summary span[style*="ok-fg"] { color: var(--text) !important; }
+.done .tick { background: var(--electric-strong); box-shadow: none; }
+.compare .before, .compare .after { background: var(--chip); border: 1px solid var(--border); }
+.clear { background: var(--surface); }
+.badge { background: var(--electric-strong); }
+.nav-a.on .badge { background: #fff; color: var(--electric-strong); }
+.tabs .badge { background: var(--electric-strong); }
+.toast { background: #16181d; }
+.av.f { background: var(--electric-strong); }
+.proj .dot { background: #2a2d35; color: #e9eaee; }
 </style>
 </head>
 <body>
@@ -600,7 +634,7 @@ details.handled summary { font-size: 13.5px; font-weight: 600; }
           <div>
       <div class="crumbs">Zedu · Francescameju</div>
       <div class="greet" id="greet">Hello, Francesca</div>
-      <h1>Needs you <span class="spark" aria-hidden="true">✨</span></h1>
+      <h1>Needs you</h1>
       <p class="sub">Your agent only stops for you here. Everything else it handles on its own and reports below. Answer in one tap, and teach it a rule so it asks less next time.</p>
 
       <div class="summary" id="summary"></div>
