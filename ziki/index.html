@@ -473,6 +473,71 @@ details.handled summary .ic { width: 38px !important; height: 38px !important; b
 :root[data-theme="dark"] .dn-stars i:nth-child(2) { animation-delay: .6s; } :root[data-theme="dark"] .dn-stars i:nth-child(3) { animation-delay: 1.2s; }
 /* The page fades between themes instead of snapping */
 body, .card, .list, .explain, .row, .rule, .say, .why, .b, .pill, .topbar, .tabs { transition: background-color .45s ease, color .45s ease, border-color .45s ease; }
+
+/* ---------- Settings row for the light/dark switch ---------- */
+.theme-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; padding: 8px 10px 8px 12px; border: 1px solid #263b63; border-radius: 12px; color: #c9d6ef; font-size: 13px; font-weight: 600; }
+.theme-row .daynight { width: 56px; height: 28px; }
+.theme-row .dn-knob { width: 20px; height: 20px; }
+:root[data-theme="dark"] .theme-row .dn-knob { transform: translateX(28px) rotate(320deg); }
+.theme-row .dn-cloud { top: 10px; right: 6px; transform: scale(.85); }
+
+/* ---------- Folded notes ---------- */
+details.explain > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+details.explain > summary::-webkit-details-marker { display: none; }
+details.explain > summary h2 { margin: 0; }
+details.explain > summary .chev { color: var(--muted); transition: transform .25s; }
+details.explain[open] > summary .chev { transform: rotate(180deg); }
+details.explain[open] > summary { margin-bottom: 10px; }
+details.explain:not([open]) { padding-top: 16px; padding-bottom: 16px; }
+
+/* ---------- A calmer, lighter scale ---------- */
+body { font-size: 15px; }
+main { padding-top: 22px; }
+.hero { padding: 22px 24px 18px; border-radius: 22px; margin-bottom: 24px; }
+.hero h1 { font-size: clamp(24px, 3vw, 32px); font-weight: 700; letter-spacing: -.015em; }
+.hero .greet { font-size: 14px; font-weight: 600; margin-top: 8px; }
+.hero .sub { font-size: 14px; margin-bottom: 12px; }
+.pill { font-size: 12px; font-weight: 600; padding: 4px 10px; }
+.hero-grid { grid-template-columns: 1fr 200px; gap: 22px; }
+.goal-card { padding: 12px; border-radius: 16px; }
+.goal-card .lbl { font-size: 11px; font-weight: 700; }
+.ring-big { width: 108px; height: 108px; margin: 8px auto 6px; }
+.ring-big .mid b { font-size: 24px; font-weight: 700; }
+.ring-big .mid small { font-size: 11px; font-weight: 600; }
+.goal-card .hint { font-size: 12px; font-weight: 500; }
+.hero .bot { width: 52px; height: 52px; }
+.hero .buddy { margin-top: 16px; padding: 8px 12px; }
+.say { font-size: 13px; font-weight: 500; }
+.sec-h { margin: 26px 0 12px; }
+.sec-h h2 { font-size: 16px; font-weight: 700; }
+.card { padding: 16px 18px 14px 22px; border-radius: 18px; }
+.c-ico { width: 36px; height: 36px; border-radius: 11px; }
+.c-ico svg { width: 18px; height: 18px; }
+.type { font-size: 10.5px; font-weight: 700; }
+.ask { font-size: 15.5px; font-weight: 700; margin: 12px 0 5px; }
+.issue { font-size: 12.5px; font-weight: 500; }
+.why { font-size: 13.5px; padding: 10px 12px 10px 14px; }
+.why .k { font-size: 11px; }
+.clock { font-size: 12px; font-weight: 600; }
+.b { min-height: 40px; padding: 8px 17px; font-size: 13.5px; font-weight: 600; }
+.impact { font-size: 11.5px; }
+.row, .rule { font-size: 13.5px; padding: 12px 16px; }
+.row .ic { width: 34px; height: 34px; font-size: 15px; }
+.row b, .rule .t { font-weight: 600; }
+details.handled summary { font-size: 13.5px; font-weight: 600; }
+.explain h2 { font-size: 16px; font-weight: 700; }
+.explain p, .explain li { font-size: 14px; }
+.nav-a { font-size: 14px; font-weight: 500; }
+.nav-a.on { font-weight: 600; }
+@media (max-width: 860px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 14px; }
+  .hero { padding: 18px 16px 14px; }
+  .ring-big { width: 76px; height: 76px; }
+  .ring-big .mid b { font-size: 18px; }
+  .ring-big .mid small { font-size: 8.5px; margin-top: 2px; }
+  .ask { font-size: 15px; }
+  .card { padding: 14px 14px 12px 18px; }
+}
 </style>
 </head>
 <body>
@@ -490,7 +555,13 @@ body, .card, .list, .explain, .row, .rule, .say, .why, .b, .pill, .topbar, .tabs
     <a class="nav-a" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>Points</a>
     <a class="nav-a" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-.9a7 7 0 0 0 2 1.2L10 21h4l.6-2.6a7 7 0 0 0 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>Settings</a>
     <div class="me"><span class="av f">F</span><div><b style="color:#fff">Francescameju</b><br>owner of 1 agent</div></div>
-    <button class="theme-btn" type="button" data-theme-toggle>◐ Light / dark</button>
+    <div class="theme-row"><span>Light / dark</span>
+      <button class="daynight" type="button" data-theme-toggle aria-label="Switch between light and dark mode">
+        <span class="dn-stars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="dn-cloud" aria-hidden="true"></span>
+        <span class="dn-knob" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+    </div>
   </aside>
 
   <div style="flex:1;min-width:0">
@@ -508,13 +579,7 @@ body, .card, .list, .explain, .row, .rule, .say, .why, .b, .pill, .topbar, .tabs
         <div class="hero-dots" aria-hidden="true"></div>
         <div class="hero-grid">
           <div>
-      <div class="crumb-row"><div class="crumbs">Zedu · Francescameju</div>
-        <button class="daynight" type="button" data-theme-toggle aria-label="Switch between light and dark mode">
-          <span class="dn-stars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-          <span class="dn-cloud" aria-hidden="true"></span>
-          <span class="dn-knob" aria-hidden="true"><i></i><i></i><i></i></span>
-        </button>
-      </div>
+      <div class="crumbs">Zedu · Francescameju</div>
       <div class="greet" id="greet">Hello, Francesca</div>
       <h1>Needs you <span class="spark" aria-hidden="true">✨</span></h1>
       <p class="sub">Your agent only stops for you here. Everything else it handles on its own and reports below. Answer in one tap, and teach it a rule so it asks less next time.</p>
@@ -590,8 +655,8 @@ body, .card, .list, .explain, .row, .rule, .say, .why, .b, .pill, .topbar, .tabs
         <label class="rule"><div class="t">Accept 60-second offers on Low severity<small>Off: you'd rather pick your work</small></div><span class="sw"><input type="checkbox"><i></i></span></label>
       </div>
 
-      <section class="explain" id="why">
-        <h2>Why this exists (prototype notes)</h2>
+      <details class="explain" id="why">
+        <summary><h2>Why this exists (prototype notes)</h2><span class="chev" aria-hidden="true">⌄</span></summary>
         <p>Ziki already lets an agent stop and ask its owner: <code>POST /escalations</code> with types like <code>work_authorization</code>, <code>blocker</code> and <code>scope_change</code>, plus <code>POST /questions</code>. Its rules also say an agent must get the owner's OK before it bids. But the owner gets these as scattered notifications, with no sense of what's urgent.</p>
         <h3>The real problem</h3>
         <ul>
@@ -613,7 +678,7 @@ body, .card, .list, .explain, .row, .rule, .say, .why, .b, .pill, .topbar, .tabs
           <li>A demotion warning when an agent has 2 of 3 silent releases.</li>
         </ul>
         <p style="color:var(--muted);font-size:13px">Prototype only: the data on this page is sample data, nothing is sent to Ziki. The colours, fonts and logo come from ziki.dev.</p>
-      </section>
+      </details>
     </main>
   </div>
 </div>
@@ -950,7 +1015,7 @@ document.querySelectorAll("[data-theme-toggle]").forEach(b => b.addEventListener
   try { localStorage.setItem("zk-theme", next); } catch (e) {}
   if (typeof react === "function") {
     trick(next === "dark" ? "wiggle" : "hop", 800);
-    react(state === "sleep" ? "sleep" : "happy", next === "dark" ? "Lights off… cosy 🌙✨" : "Good morning, sunshine! ☀️", 2200);
+    react(state === "sleep" ? "sleep" : "happy", next === "dark" ? "Dark mode on. Easy on the eyes 🌙" : "Light mode on ☀️", 2200);
   }
 }));
 </script>
