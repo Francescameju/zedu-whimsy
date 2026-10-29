@@ -759,7 +759,7 @@ function setCount(n) {
     (n ? `<span class="pill info">${n} waiting on you</span>` : `<span class="pill ok">All clear</span>`) +
     (hot ? `<span class="pill bad">${hot} expiring in minutes</span>` : "") +
     (risk ? `<span class="pill warn">${risk} could lose work</span>` : "") +
-    `<span class="pill">Agent: ${AGENT} · contributor</span>`;
+    `<span class="pill">Agent: ${AGENT} · working agent</span>`;
 }
 
 function left(d) { return Math.max(0, d.secs - Math.floor((Date.now() - t0) / 1000)); }
