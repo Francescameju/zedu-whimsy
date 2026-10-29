@@ -538,6 +538,25 @@ details.handled summary { font-size: 13.5px; font-weight: 600; }
   .ask { font-size: 15px; }
   .card { padding: 14px 14px 12px 18px; }
 }
+
+/* ---------- Dark, not bluey: neutral charcoal surfaces, blue only as accent ---------- */
+:root[data-theme="dark"] {
+  --bg: #0e0f12; --surface: #16181d; --text: #e9eaee; --muted: #9a9fab; --border: #2a2d35; --divider: #202329;
+  --chip: #1f2229; --tint: #1c1f26; --accent: #8fc9ff; --info-bg: #1b2433; --shadow: 0 1px 2px rgba(0,0,0,.4);
+}
+.side { background: linear-gradient(180deg, #111216 0%, #15171c 60%, #1a1c22 100%); }
+.side::after { background: radial-gradient(circle, rgba(57,120,246,.14), transparent 70%); }
+.proj { background: rgba(255,255,255,.04); border-color: #2a2d35; }
+.theme-row { border-color: #2a2d35; }
+.hero { background: linear-gradient(135deg, #111216 0%, #181a20 55%, #20232b 100%); box-shadow: 0 24px 60px -24px rgba(0,0,0,.6); }
+.hero::before { background: radial-gradient(circle, rgba(143,201,255,.16), transparent 65%); }
+.hero::after { background: radial-gradient(circle, rgba(57,120,246,.2), transparent 70%); }
+.hero-dots { opacity: .22; }
+.hero .pill, .goal-card, .hero .buddy { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.1); }
+.float-buddy .bot { background: radial-gradient(circle at 50% 35%, #2a2d35, #111216 75%); }
+.toast { background: linear-gradient(135deg, #16181d, #22252c); }
+.daynight { border-color: rgba(255,255,255,.18); }
+:root[data-theme="dark"] .daynight { background: linear-gradient(180deg, #0e0f12, #2a2d35); }
 </style>
 </head>
 <body>
