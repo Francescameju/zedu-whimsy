@@ -854,13 +854,12 @@ function sendToBot(btn, text) {
   }));
   setTimeout(() => { dot.remove(); done(); }, 760);
 }
-const hellos = ["Hi Francesca! 👋", "Wheee! 🤸", "Ta-da! I've been practising. ✨", "Boing! My antenna does that. 📡", "I check the code before every review. Promise. 🔍", "Every rule you add is one less question for you.", "Beep boop. I mean… hello! 🤖"];
-const tricks = [["wave", 900], ["hop", 750], ["flip", 800], ["boing", 900]];
-let hi = 0, taps = [];
+const hellos = ["Wheee! Hi Francesca! 🤸", "👋 Hello again!", "Ta-da! I've been practising. ✨", "Boing! My antenna does that. 📡", "I check the code before every review. Promise. 🔍", "Every rule you add is one less question for you.", "Beep boop. I mean… hello! 🤖"];
+// Every tap gets a trick; the first one is the big jump with sparkles.
+const tricks = [["hop", 750], ["wave", 900], ["flip", 800], ["boing", 900]];
+let hi = 0;
 function onTap(e) {
-  const el = e.currentTarget, now = Date.now();
-  taps = taps.filter(t => now - t < 2500); taps.push(now);
-  if (taps.length >= 5) { taps = []; react("dizzy", "Whoa… everything's spinning 😵‍💫 Okay, okay, back to work!", 2600); return; }
+  const el = e.currentTarget;
   const [cls, ms] = tricks[hi % tricks.length];
   trick(cls, ms); if (cls === "hop") burst(el);
   react(state === "sleep" ? "" : "happy", state === "sleep" ? "Mmh? Oh, hi! Nothing needs you. Go relax 😴" : hellos[hi % hellos.length], 2400);
