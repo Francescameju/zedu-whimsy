@@ -149,7 +149,7 @@
   /* ---------- App preview ---------- */
   .preview-wrap { position: relative; max-width: 1000px; margin: 64px auto 0; padding: 0 16px; }
   .preview {
-    border-radius: 22px; overflow: hidden; border: 1px solid var(--line);
+    position: relative; z-index: 1; border-radius: 22px; overflow: hidden; border: 1px solid var(--line);
     box-shadow: 0 30px 60px -20px rgba(47,42,122,.35);
     animation: bob 6s ease-in-out infinite; background: #fff; text-align: left;
   }
@@ -175,7 +175,7 @@
   .typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
   @keyframes dot { 30% { transform: translateY(-5px); background: var(--purple); } }
   .note {
-    position: absolute; right: -10px; top: -26px; background: #fff; border-radius: 16px; padding: 10px 14px;
+    position: absolute; z-index: 3; right: -10px; top: -58px; background: #fff; border-radius: 16px; padding: 10px 14px;
     border: 2px solid var(--purple-soft); box-shadow: 0 12px 28px rgba(16,24,40,.12); font-size: 14px;
     display: flex; gap: 10px; align-items: center; transform: rotate(3deg); animation: wiggle 4s ease-in-out infinite;
   }
@@ -207,7 +207,9 @@
     .stats { grid-template-columns: 1fr; gap: 26px; }
     .p-body { grid-template-columns: 1fr; }
     .p-rail, .p-side { display: none; }
-    .note { right: 6px; top: -34px; font-size: 12px; }
+    .note { right: 6px; top: -52px; font-size: 12px; }
+    .p-search { display: none; }
+    .p-top { justify-content: space-between; }
     .learning { white-space: normal; }
   }
 
