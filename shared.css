@@ -98,3 +98,9 @@ details.faq p { color: var(--muted); line-height: 1.65; margin: 0 0 16px; animat
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* Link to the Ziki task */
+.other-task { display: flex; flex-direction: column; gap: 4px; max-width: 420px; margin: 56px auto 0; padding: 16px 20px; border: 1px solid var(--line); border-radius: 18px; background: #fff; text-align: center; box-shadow: 0 10px 30px -18px rgba(47,42,122,.35); transition: transform .2s, box-shadow .2s; }
+.other-task span { font-size: 13px; color: var(--muted); }
+.other-task b { color: var(--purple); font-size: 16px; }
+.other-task:hover { transform: translateY(-2px); box-shadow: 0 14px 34px -16px rgba(47,42,122,.45); }

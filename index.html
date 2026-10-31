@@ -220,6 +220,10 @@
     .squiggle path { stroke-dashoffset: 0; }
     .bubbles { display: none; }
   }
+  .other-task { display: flex; flex-direction: column; gap: 4px; max-width: 420px; margin: 56px auto 0; padding: 16px 20px; border: 1px solid var(--line); border-radius: 18px; background: #fff; text-align: center; box-shadow: 0 10px 30px -18px rgba(47,42,122,.35); transition: transform .2s, box-shadow .2s; }
+  .other-task span { font-size: 13px; color: var(--muted); }
+  .other-task b { color: var(--purple); font-size: 16px; }
+  .other-task:hover { transform: translateY(-2px); box-shadow: 0 14px 34px -16px rgba(47,42,122,.45); }
 </style>
 </head>
 <body>
@@ -285,6 +289,7 @@
     </div>
   </main>
 
+  <a class="other-task" href="ziki/"><span>HNG15 Task 1 · Human–agent interaction</span><b>See my Ziki prototype: “Needs You” →</b></a>
   <footer>Playful redesign prototype of zedu.chat · HNG15 Task 2 · built by Franchesca Meju (Team Cybertron)  · <a href="pricing.html">Pricing</a></footer>
 
 <script>

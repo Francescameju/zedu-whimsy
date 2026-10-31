@@ -14,3 +14,5 @@ Built by Franchesca Meju (Team Cybertron).
 ## Pages in the submission
 - **Home** (`index.html`): the headline bounces in, "Learning" gets a hand-drawn squiggle, the stars pop in, a few chat bubbles drift up and stop, and "Try for free" throws graduation-cap confetti.
 - **Pricing** (`pricing.html`): a gold ₦ coin flips over to show "FREE" on the ₦0 plan, the "Most Popular" sticker wiggles, ticks draw themselves in the comparison table, and FAQ answers slide open. Each effect plays once on scroll or on tap.
+
+**Also:** HNG15 Task 1 (Ziki human–agent interaction), "Needs You": https://francescameju.github.io/zedu-whimsy/ziki/ (same as https://francescameju.github.io/ziki-needs-you/)
